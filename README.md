@@ -1,5 +1,5 @@
 # Neural Computation Laboratory Website
-
+ all
 Modern, fully static academic lab website — Astro 5 · TypeScript · Tailwind CSS · Pagefind search.
 
 ## Quick Start
