@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Search" description="Search the Neural Computation Laboratory website.">
+  <div class="container-lab py-12">
+    <div class="mb-10 border-b border-gray-200 dark:border-gray-800 pb-8">
+      <h1 class="section-heading">Search</h1>
+      <p class="section-lead">Search across all pages, publications, team members, and news.</p>
+    </div>
+
+    <div id="search-container" class="max-w-2xl">
+      <div id="pagefind-search"></div>
+    </div>
+
+    <!-- Fallback while pagefind loads -->
+    <noscript>
+      <p class="text-ink-muted font-serif">Search requires JavaScript to be enabled.</p>
+    </noscript>
+  </div>
+</BaseLayout>
+
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+<script src="/pagefind/pagefind-ui.js" is:inline></script>
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (typeof PagefindUI !== 'undefined') {
+      new PagefindUI({
+        element: '#pagefind-search',
+        showImages: false,
+        excerptLength: 30,
+        resetStyles: false,
+      });
+    }
+  });
+</script>
+
+<style is:global>
+  .pagefind-ui__search-input {
+    @apply w-full px-4 py-2.5 text-sm bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-accent font-sans;
+  }
+  .pagefind-ui__result {
+    @apply py-4 border-b border-gray-100 dark:border-gray-800;
+  }
+  .pagefind-ui__result-title {
+    @apply font-sans font-semibold text-ink dark:text-white hover:text-accent;
+  }
+  .pagefind-ui__result-excerpt {
+    @apply font-serif text-sm text-ink-muted dark:text-gray-400 mt-1;
+  }
+</style>

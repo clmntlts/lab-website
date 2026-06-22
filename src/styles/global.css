@@ -1,0 +1,122 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource/source-serif-4/400.css';
+@import '@fontsource/source-serif-4/400-italic.css';
+@import '@fontsource/source-serif-4/600.css';
+@import '@fontsource/jetbrains-mono/400.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --margin-rule: theme('colors.margin');
+    scroll-behavior: smooth;
+  }
+
+  html {
+    @apply font-sans text-ink antialiased;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  body {
+    @apply bg-paper text-ink min-h-screen;
+  }
+
+  .dark body {
+    @apply bg-ink text-paper;
+  }
+
+  ::selection {
+    @apply bg-accent-muted text-accent-dark;
+  }
+
+  .dark ::selection {
+    @apply bg-accent text-white;
+  }
+
+  /* Focus visible — accessibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2;
+  }
+
+  /* The signature margin rule */
+  .margin-rule {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+  .margin-rule::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--margin-rule);
+    border-radius: 1px;
+  }
+
+  /* Skip to content */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:rounded;
+  }
+}
+
+@layer components {
+  .container-lab {
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-heading {
+    @apply font-sans text-3xl font-semibold tracking-tight text-ink mb-2;
+  }
+
+  .section-lead {
+    @apply font-serif text-lg text-ink-muted leading-relaxed mb-8;
+  }
+
+  .card {
+    @apply bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+
+  .dark .card {
+    @apply bg-gray-900 border-gray-800;
+  }
+
+  .tag {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent-muted text-accent-dark;
+  }
+
+  .dark .tag {
+    @apply bg-blue-900 text-blue-300;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-md hover:bg-accent-dark transition-colors focus-visible:ring-2 focus-visible:ring-accent;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-4 py-2 text-accent text-sm font-medium rounded-md hover:bg-accent-muted transition-colors;
+  }
+
+  .link {
+    @apply text-accent hover:text-accent-dark underline underline-offset-2 decoration-accent/30 hover:decoration-accent transition-colors;
+  }
+}
+
+/* Print styles */
+@media print {
+  nav, footer, .no-print { display: none !important; }
+  body { font-size: 11pt; color: #000; background: #fff; }
+  a { color: #000; text-decoration: underline; }
+  .card { border: 1px solid #ccc; box-shadow: none; }
+  @page { margin: 2cm; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allNews = await getCollection('news');
+const sorted = allNews.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const categories = [...new Set(sorted.map(n => n.data.category))];
+
+const categoryColors: Record<string, string> = {
+  Award: 'bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400',
+  Publication: 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400',
+  Grant: 'bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400',
+  Event: 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400',
+  Hiring: 'bg-accent-muted text-accent-dark dark:bg-blue-900/20 dark:text-blue-300',
+  Media: 'bg-pink-50 text-pink-700 dark:bg-pink-900/20 dark:text-pink-400',
+  General: 'bg-gray-50 text-gray-700 dark:bg-gray-800 dark:text-gray-400',
+};
+---
+
+<BaseLayout title="News" description="Latest news from the Neural Computation Laboratory.">
+  <div class="container-lab py-12">
+    <div class="mb-10 border-b border-gray-200 dark:border-gray-800 pb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <h1 class="section-heading">News</h1>
+        <p class="section-lead">Updates from the lab — publications, grants, events, and more.</p>
+      </div>
+      <a href="/rss.xml" class="flex items-center gap-2 text-sm text-ink-muted hover:text-accent transition-colors flex-shrink-0">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19.01 7.38 20 6.18 20C4.98 20 4 19.01 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
+        </svg>
+        RSS Feed
+      </a>
+    </div>
+
+    <div class="space-y-6">
+      {sorted.map(item => (
+          <article class="card p-6" id={item.id}>
+            <div class="flex items-start gap-4">
+              <div class="flex-shrink-0 mt-0.5">
+                <span class:list={['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', categoryColors[item.data.category] ?? categoryColors.General]}>
+                  {item.data.category}
+                </span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h2 class="font-sans text-lg font-semibold text-ink dark:text-white mb-1">
+                  <a href={`/news/${item.id}`} class="hover:text-accent transition-colors">{item.data.title}</a>
+                </h2>
+                <time class="text-xs text-ink-faint" datetime={item.data.date.toISOString()}>
+                  {item.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </time>
+                <p class="mt-2 font-serif text-sm text-ink-muted leading-relaxed">{item.data.summary}</p>
+                <a href={`/news/${item.id}`} class="link text-sm mt-3 inline-block">Read more &rarr;</a>
+              </div>
+            </div>
+          </article>
+        ))}
+
+    </div>
+  </div>
+</BaseLayout>

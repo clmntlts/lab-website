@@ -1,0 +1,33 @@
+title: "Riemannian geometry of neural population codes"
+authors:
+  - "E. Vasquez"
+  - "K. Nakamura"
+  - "A. Okonkwo"
+  - "J. Cunningham"
+year: 2024
+venue: "Nature Neuroscience"
+venueShort: "Nat. Neurosci."
+type: journal
+doi: "10.1038/s41593-024-00000-0"
+arxiv: "2401.00000"
+pdf: "/pdfs/vasquez2024riemannian.pdf"
+code: "https://github.com/evasquez-lab/riemannian-neuro"
+abstract: >
+  Neural population activity lives on low-dimensional manifolds embedded in high-dimensional state spaces.
+  We develop a Riemannian geometric framework for analyzing these manifolds that respects the intrinsic
+  curvature of neural representations. Applied to recordings from macaque visual and motor cortex,
+  we show that the curvature of neural manifolds predicts behavioral performance and generalizes
+  across tasks. Our framework provides new tools for comparing representations across brain areas,
+  species, and artificial neural networks.
+keywords:
+  - neural manifolds
+  - Riemannian geometry
+  - population coding
+  - visual cortex
+  - motor cortex
+categories:
+  - Neural Coding
+  - Theory
+featured: true
+award: "Editor's Choice"
+image: "/images/publications/vasquez2024.png"

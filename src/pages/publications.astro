@@ -1,0 +1,229 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import PublicationCard from '../components/publications/PublicationCard.astro';
+import { sortByYear, groupByYear } from '../lib/utils';
+
+const allPubs = await getCollection('publications');
+const sorted = sortByYear(allPubs);
+const grouped = groupByYear(sorted);
+const years = Object.keys(grouped).map(Number).sort((a, b) => b - a);
+
+const allCategories = [...new Set(allPubs.flatMap(p => p.data.categories))].sort();
+const allTypes = [...new Set(allPubs.map(p => p.data.type))].sort();
+---
+
+<BaseLayout title="Publications" description="Full list of publications from the Neural Computation Laboratory.">
+  <div class="container-lab py-12">
+    <!-- Page header -->
+    <div class="mb-8 border-b border-gray-200 dark:border-gray-800 pb-8">
+      <h1 class="section-heading">Publications</h1>
+      <p class="section-lead max-w-2xl">Our research outputs, with open access where possible. PDFs and code are freely available.</p>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="flex flex-col sm:flex-row gap-3 mb-8" id="pub-toolbar">
+      <!-- Search -->
+      <div class="relative flex-1">
+        <label for="pub-search" class="sr-only">Search publications</label>
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-faint pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input
+          id="pub-search"
+          type="search"
+          placeholder="Search title, author, keyword…"
+          class="w-full pl-9 pr-4 py-2 text-sm bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- Filter by type -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="text-xs text-ink-faint font-medium">Type:</span>
+        <button class="pub-filter-btn active px-2.5 py-1 rounded text-xs font-medium border transition-colors" data-filter="type" data-value="all">All</button>
+        {allTypes.map(t => (
+          <button class="pub-filter-btn px-2.5 py-1 rounded text-xs font-medium border transition-colors" data-filter="type" data-value={t}>
+            {t.charAt(0).toUpperCase() + t.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      <!-- View toggle -->
+      <div class="flex items-center border border-gray-200 dark:border-gray-700 rounded-md overflow-hidden">
+        <button id="view-list" aria-label="List view" aria-pressed="true" class="p-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-accent">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+        <button id="view-cards" aria-label="Card view" aria-pressed="false" class="p-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-ink-faint">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Results count -->
+    <p class="text-sm text-ink-faint mb-6" id="pub-count" aria-live="polite">
+      Showing <span id="pub-count-num">{allPubs.length}</span> publications
+    </p>
+
+    <!-- Publication list by year -->
+    <div id="pub-list-view">
+      {years.map(year => (
+        <section class="pub-year-group mb-10" data-year={year} aria-labelledby={`year-${year}`}>
+          <h2 id={`year-${year}`} class="font-sans text-sm font-bold text-ink-faint dark:text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-3">
+            {year}
+            <span class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></span>
+          </h2>
+          <div class="pub-items-container space-y-2">
+            {grouped[year].map(pub => (
+              <PublicationCard pub={pub} view="list" />
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <!-- Card grid view (hidden by default) -->
+    <div id="pub-card-view" class="hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="pub-card-grid">
+        {sorted.map(pub => (
+          <PublicationCard pub={pub} view="card" />
+        ))}
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div id="pub-empty" class="hidden text-center py-16 text-ink-muted">
+      <svg class="w-12 h-12 mx-auto mb-4 text-ink-faint" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+      </svg>
+      <p class="font-sans font-medium">No publications match your search.</p>
+      <button id="clear-filters" class="mt-2 link text-sm">Clear filters</button>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // ─── Publication filter & search ───────────────────────────────────────────
+  const searchInput = document.getElementById('pub-search') as HTMLInputElement;
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.pub-filter-btn');
+  const listView = document.getElementById('pub-list-view')!;
+  const cardView = document.getElementById('pub-card-view')!;
+  const viewListBtn = document.getElementById('view-list')!;
+  const viewCardsBtn = document.getElementById('view-cards')!;
+  const emptyState = document.getElementById('pub-empty')!;
+  const countSpan = document.getElementById('pub-count-num')!;
+  const clearBtn = document.getElementById('clear-filters')!;
+
+  let currentType = 'all';
+  let currentSearch = '';
+  let isCardView = false;
+
+  function getCards(): NodeListOf<Element> {
+    return document.querySelectorAll('.pub-card');
+  }
+
+  function applyFilters() {
+    const cards = getCards();
+    let visible = 0;
+
+    cards.forEach(card => {
+      const type = card.getAttribute('data-type') ?? '';
+      const title = card.getAttribute('data-title') ?? '';
+      const authors = card.getAttribute('data-authors') ?? '';
+      const categories = card.getAttribute('data-categories') ?? '';
+
+      const typeMatch = currentType === 'all' || type === currentType;
+      const q = currentSearch.toLowerCase();
+      const searchMatch = !q || title.includes(q) || authors.includes(q) || categories.includes(q);
+      const show = typeMatch && searchMatch;
+
+      (card as HTMLElement).style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    // Hide year groups with no visible items (list view)
+    document.querySelectorAll('.pub-year-group').forEach(group => {
+      const hasVisible = Array.from(group.querySelectorAll('.pub-card')).some(
+        c => (c as HTMLElement).style.display !== 'none'
+      );
+      (group as HTMLElement).style.display = hasVisible ? '' : 'none';
+    });
+
+    countSpan.textContent = String(visible);
+    emptyState.classList.toggle('hidden', visible > 0);
+    listView.classList.toggle('hidden', isCardView || visible === 0);
+    cardView.classList.toggle('hidden', !isCardView || visible === 0);
+  }
+
+  searchInput.addEventListener('input', (e) => {
+    currentSearch = (e.target as HTMLInputElement).value;
+    applyFilters();
+  });
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter!;
+      const value = btn.dataset.value!;
+      if (filter === 'type') {
+        currentType = value;
+        document.querySelectorAll<HTMLButtonElement>('[data-filter="type"]').forEach(b => {
+          b.classList.toggle('active', b.dataset.value === value);
+          b.classList.toggle('bg-accent', b.dataset.value === value);
+          b.classList.toggle('text-white', b.dataset.value === value);
+          b.classList.toggle('border-accent', b.dataset.value === value);
+          b.classList.toggle('text-ink-muted', b.dataset.value !== value);
+          b.classList.toggle('border-gray-200', b.dataset.value !== value);
+        });
+      }
+      applyFilters();
+    });
+  });
+
+  // Initialize active filter styles
+  document.querySelectorAll<HTMLButtonElement>('[data-filter="type"]').forEach(b => {
+    if (b.dataset.value === 'all') {
+      b.classList.add('bg-accent', 'text-white', 'border-accent');
+    } else {
+      b.classList.add('text-ink-muted', 'dark:text-gray-400', 'border-gray-200', 'dark:border-gray-700');
+      b.classList.add('hover:border-accent', 'hover:text-accent');
+    }
+  });
+
+  viewListBtn.addEventListener('click', () => {
+    isCardView = false;
+    viewListBtn.setAttribute('aria-pressed', 'true');
+    viewCardsBtn.setAttribute('aria-pressed', 'false');
+    viewListBtn.classList.replace('text-ink-faint', 'text-accent');
+    viewCardsBtn.classList.replace('text-accent', 'text-ink-faint');
+    applyFilters();
+  });
+
+  viewCardsBtn.addEventListener('click', () => {
+    isCardView = true;
+    viewCardsBtn.setAttribute('aria-pressed', 'true');
+    viewListBtn.setAttribute('aria-pressed', 'false');
+    viewCardsBtn.classList.replace('text-ink-faint', 'text-accent');
+    viewListBtn.classList.replace('text-accent', 'text-ink-faint');
+    applyFilters();
+  });
+
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    currentSearch = '';
+    currentType = 'all';
+    document.querySelectorAll<HTMLButtonElement>('[data-filter="type"]').forEach(b => {
+      if (b.dataset.value === 'all') {
+        b.classList.add('bg-accent', 'text-white', 'border-accent');
+        b.classList.remove('text-ink-muted', 'border-gray-200');
+      } else {
+        b.classList.remove('bg-accent', 'text-white', 'border-accent');
+        b.classList.add('text-ink-muted', 'border-gray-200');
+      }
+    });
+    applyFilters();
+  });
+</script>

@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import PublicationCard from '../components/publications/PublicationCard.astro';
+import TeamCard from '../components/team/TeamCard.astro';
+import { SITE } from '../lib/config';
+import { sortByYear } from '../lib/utils';
+
+const allPubs = await getCollection('publications');
+const featuredPubs = sortByYear(allPubs).filter(p => p.data.featured).slice(0, 3);
+
+const allTeam = await getCollection('team');
+const sortedTeam = allTeam.sort((a, b) => a.data.order - b.data.order);
+
+const allNews = await getCollection('news');
+const recentNews = allNews
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .filter(n => n.data.featured)
+  .slice(0, 3);
+
+const researchTopics = [
+  { icon: '◈', title: 'Neural Geometry', desc: 'How the shape of population activity constrains neural computation.' },
+  { icon: '◉', title: 'Predictive Coding', desc: 'Normative theories of hierarchical inference in cortical circuits.' },
+  { icon: '◎', title: 'Working Memory', desc: 'Dynamical mechanisms of persistent activity in prefrontal cortex.' },
+  { icon: '◇', title: 'Generative Models', desc: 'Deep latent variable models for neural population dynamics.' },
+];
+---
+
+<BaseLayout>
+  <!-- Hero -->
+  <section class="relative overflow-hidden bg-ink text-white" aria-label="Lab introduction">
+    <div class="absolute inset-0 opacity-5" aria-hidden="true"
+      style="background-image: radial-gradient(circle at 20% 80%, #2563EB 0%, transparent 50%), radial-gradient(circle at 80% 20%, #E53E3E 0%, transparent 50%);">
+    </div>
+    <div class="absolute left-0 top-0 bottom-0 w-1 bg-margin" aria-hidden="true"></div>
+    <div class="container-lab py-20 md:py-28 relative">
+      <div class="max-w-2xl">
+        <p class="font-sans text-xs font-bold tracking-[0.2em] uppercase text-accent mb-4">
+          {SITE.institution} &middot; {SITE.department}
+        </p>
+        <h1 class="font-sans text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.05] mb-6">
+          Neural<br />
+          Computation<br />
+          <span class="text-accent">Laboratory</span>
+        </h1>
+        <p class="font-serif text-lg md:text-xl text-gray-300 leading-relaxed mb-8 max-w-xl">
+          We investigate how neural circuits represent, transform, and communicate information &mdash; bridging
+          mathematics, machine learning, and experimental neuroscience.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="/research" class="btn-primary">Our Research &rarr;</a>
+          <a href="/publications" class="inline-flex items-center gap-2 px-4 py-2 border border-white/20 text-white text-sm font-medium rounded-md hover:bg-white/10 transition-colors">
+            Publications
+          </a>
+          <a href="/contact" class="inline-flex items-center gap-2 px-4 py-2 border border-red-400/60 text-red-400 text-sm font-medium rounded-md hover:bg-red-400/10 transition-colors">
+            Join the Lab
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Research Themes -->
+  <section class="container-lab py-16" aria-labelledby="themes-heading">
+    <div class="mb-10">
+      <h2 id="themes-heading" class="section-heading">Research Themes</h2>
+      <p class="section-lead">Four interconnected questions about computation in biological and artificial neural networks.</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {researchTopics.map((topic) => (
+        <div class="card p-5 margin-rule hover:border-accent/30 transition-colors">
+          <div class="text-2xl text-accent mb-3 font-mono" aria-hidden="true">{topic.icon}</div>
+          <h3 class="font-sans font-semibold text-ink dark:text-white mb-2">{topic.title}</h3>
+          <p class="text-sm text-ink-muted dark:text-gray-400 font-serif leading-relaxed">{topic.desc}</p>
+        </div>
+      ))}
+    </div>
+    <div class="mt-6 text-right">
+      <a href="/research" class="link text-sm">All research topics &rarr;</a>
+    </div>
+  </section>
+
+  <!-- Stats row -->
+  <section class="bg-ink text-white py-12" aria-label="Lab statistics">
+    <div class="container-lab">
+      <dl class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        {[
+          { value: '5', label: 'Team members' },
+          { value: '20+', label: 'Publications' },
+          { value: '2', label: 'Active grants' },
+          { value: String(new Date().getFullYear() - SITE.founded), label: 'Years active' },
+        ].map(stat => (
+          <div>
+            <dt class="font-sans text-4xl font-semibold text-accent">{stat.value}</dt>
+            <dd class="mt-1 text-sm text-gray-400">{stat.label}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- Featured Publications -->
+  <section class="container-lab py-16" aria-labelledby="pubs-heading">
+    <div class="mb-10">
+      <h2 id="pubs-heading" class="section-heading">Selected Publications</h2>
+      <p class="section-lead">Recent highlights from the lab.</p>
+    </div>
+    <div class="space-y-4">
+      {featuredPubs.map(pub => (
+        <PublicationCard pub={pub} view="list" />
+      ))}
+    </div>
+    <div class="mt-8 text-right">
+      <a href="/publications" class="link text-sm">All publications &rarr;</a>
+    </div>
+  </section>
+
+  <!-- Team preview -->
+  <section class="bg-gray-50 dark:bg-gray-950 py-16" aria-labelledby="team-heading">
+    <div class="container-lab">
+      <div class="mb-10">
+        <h2 id="team-heading" class="section-heading">The Team</h2>
+        <p class="section-lead">Researchers from diverse backgrounds united by curiosity about the brain.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {sortedTeam.slice(0, 4).map(member => (
+          <TeamCard member={member} compact />
+        ))}
+      </div>
+      <div class="mt-6 text-right">
+        <a href="/team" class="link text-sm">Full team &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- News -->
+  <section class="container-lab py-16" aria-labelledby="news-heading">
+    <div class="mb-10">
+      <h2 id="news-heading" class="section-heading">Latest News</h2>
+    </div>
+    <div class="space-y-4">
+      {recentNews.map(item => (
+        <article class="flex gap-4 py-4 border-b border-gray-100 dark:border-gray-800 last:border-0">
+          <div class="flex-shrink-0 pt-0.5">
+            <span class:list={[
+              'inline-flex items-center px-2 py-0.5 rounded text-xs font-medium',
+              item.data.category === 'Publication' ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400' :
+              item.data.category === 'Grant' ? 'bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400' :
+              item.data.category === 'Hiring' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400' :
+              'bg-gray-50 text-gray-700 dark:bg-gray-800 dark:text-gray-400'
+            ]}>{item.data.category}</span>
+          </div>
+          <div>
+            <h3 class="font-sans font-semibold text-ink dark:text-white text-sm mb-1">
+              <a href={`/news/${item.id}`} class="hover:text-accent transition-colors">{item.data.title}</a>
+            </h3>
+            <p class="text-sm text-ink-muted dark:text-gray-400 font-serif">{item.data.summary}</p>
+            <time class="text-xs text-ink-faint mt-1 block" datetime={item.data.date.toISOString()}>
+              {item.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+            </time>
+          </div>
+        </article>
+      ))}
+    </div>
+    <div class="mt-6 text-right">
+      <a href="/news" class="link text-sm">All news &rarr;</a>
+    </div>
+  </section>
+</BaseLayout>

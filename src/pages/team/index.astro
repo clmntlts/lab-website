@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import TeamCard from '../../components/team/TeamCard.astro';
+
+const allTeam = await getCollection('team');
+const sorted = allTeam.sort((a, b) => a.data.order - b.data.order);
+
+const positionOrder = ['PI', 'Postdoc', 'PhD Student', 'Master Student', 'Research Engineer', 'Visiting Researcher'];
+const grouped = positionOrder.reduce((acc, pos) => {
+  const members = sorted.filter(m => m.data.position === pos);
+  if (members.length) acc[pos] = members;
+  return acc;
+}, {} as Record<string, typeof sorted>);
+---
+
+<BaseLayout title="Team" description="Meet the researchers of the Neural Computation Laboratory.">
+  <div class="container-lab py-12">
+    <div class="mb-10 border-b border-gray-200 dark:border-gray-800 pb-8">
+      <h1 class="section-heading">Team</h1>
+      <p class="section-lead max-w-2xl">
+        We are a group of researchers with backgrounds spanning neuroscience, mathematics, physics,
+        and computer science, united by a passion for understanding neural computation.
+      </p>
+    </div>
+
+    {Object.entries(grouped).map(([position, members]) => (
+      <section class="mb-12" aria-labelledby={`pos-${position.replace(/\s+/g, '-').toLowerCase()}`}>
+        <h2
+          id={`pos-${position.replace(/\s+/g, '-').toLowerCase()}`}
+          class="font-sans text-sm font-bold text-ink-faint dark:text-gray-500 uppercase tracking-widest mb-5 flex items-center gap-3"
+        >
+          {position}{members.length > 1 ? 's' : ''}
+          <span class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {members.map(member => <TeamCard member={member} />)}
+        </div>
+      </section>
+    ))}
+
+    <!-- Join the lab CTA -->
+    <section class="mt-8 bg-ink text-white rounded-xl p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div>
+        <h2 class="font-sans text-xl font-semibold mb-2">Interested in joining?</h2>
+        <p class="text-gray-300 font-serif text-sm max-w-md">
+          We welcome motivated researchers at all career stages. We are committed to building
+          an inclusive and supportive research environment.
+        </p>
+      </div>
+      <a href="/contact" class="flex-shrink-0 btn-primary">Open Positions &rarr;</a>
+    </section>
+  </div>
+</BaseLayout>

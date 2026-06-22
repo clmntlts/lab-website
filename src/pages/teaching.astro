@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const courses = [
+  {
+    code: 'NEUR-501',
+    title: 'Computational Neuroscience',
+    level: 'Graduate',
+    semester: 'Spring',
+    ects: 6,
+    description: 'A graduate introduction to the theoretical and computational principles underlying neural information processing. Topics include single-neuron models, network dynamics, population coding, learning rules, and normative theories of perception and action.',
+    syllabus: '/pdfs/neur501-syllabus.pdf',
+    materials: 'https://github.com/evasquez-lab/neur501',
+  },
+  {
+    code: 'NEUR-305',
+    title: 'Systems Neuroscience',
+    level: 'Undergraduate',
+    semester: 'Fall',
+    ects: 4,
+    description: 'An undergraduate survey of how the brain processes sensory information and generates behavior. Covers the visual, auditory, and somatosensory systems, motor control, and higher cognitive functions including attention, memory, and decision-making.',
+    syllabus: '/pdfs/neur305-syllabus.pdf',
+    materials: null,
+  },
+  {
+    code: 'ML-612',
+    title: 'Machine Learning for Neuroscience',
+    level: 'Graduate',
+    semester: 'Spring (alternate years)',
+    ects: 3,
+    description: 'A methods course covering modern machine learning tools with applications to neural data: dimensionality reduction, latent variable models, recurrent networks, and geometric deep learning. Emphasis on practical implementation and critical evaluation.',
+    syllabus: '/pdfs/ml612-syllabus.pdf',
+    materials: 'https://github.com/evasquez-lab/ml612',
+  },
+];
+
+const supervision = {
+  phd: 'We currently supervise PhD students through the University Doctoral School in Neuroscience and the Doctoral School in Computer Science. Prospective students should email Prof. Vasquez directly with a CV and a brief statement of research interests.',
+  postdoc: 'Postdoctoral applicants are welcome to reach out at any time. Funded positions are advertised on the News page; self-funded applications via Marie Skłodowska-Curie or other fellowships are always welcome.',
+  master: 'We offer M2 internship projects in computational neuroscience and machine learning. Projects typically last 5–6 months. Contact us in October–November for the following spring.',
+  undergrad: 'Exceptional undergraduates interested in a research immersion are encouraged to apply for summer internships through the lab\'s institutional programs.',
+};
+---
+
+<BaseLayout title="Teaching" description="Courses and supervision opportunities at the Neural Computation Laboratory.">
+  <div class="container-lab py-12">
+    <div class="mb-10 border-b border-gray-200 dark:border-gray-800 pb-8">
+      <h1 class="section-heading">Teaching</h1>
+      <p class="section-lead max-w-2xl">Courses taught by lab members and information for prospective students.</p>
+    </div>
+
+    <!-- Courses -->
+    <section aria-labelledby="courses-heading" class="mb-14">
+      <h2 id="courses-heading" class="font-sans text-sm font-bold uppercase tracking-widest text-ink-faint mb-6 flex items-center gap-3">
+        Courses
+        <span class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></span>
+      </h2>
+      <div class="space-y-5">
+        {courses.map(course => (
+          <article class="card p-6">
+            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+              <div>
+                <div class="flex items-center gap-3 mb-1">
+                  <span class="font-mono text-xs font-bold text-accent tracking-wider">{course.code}</span>
+                  <span class="text-xs text-ink-faint">{course.semester} · {course.ects} ECTS</span>
+                </div>
+                <h3 class="font-sans text-lg font-semibold text-ink dark:text-white">{course.title}</h3>
+              </div>
+              <span class:list={[
+                'flex-shrink-0 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium',
+                course.level === 'Graduate' ? 'bg-accent-muted text-accent-dark' : 'bg-gray-50 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+              ]}>{course.level}</span>
+            </div>
+            <p class="font-serif text-sm text-ink-muted dark:text-gray-400 leading-relaxed mb-4">{course.description}</p>
+            <div class="flex gap-3">
+              {course.syllabus && (
+                <a href={course.syllabus} class="btn-ghost text-xs py-1">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                  </svg>
+                  Syllabus
+                </a>
+              )}
+              {course.materials && (
+                <a href={course.materials} target="_blank" rel="noopener" class="btn-ghost text-xs py-1">
+                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                  </svg>
+                  Course materials
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Supervision -->
+    <section aria-labelledby="supervision-heading">
+      <h2 id="supervision-heading" class="font-sans text-sm font-bold uppercase tracking-widest text-ink-faint mb-6 flex items-center gap-3">
+        Supervision & Opportunities
+        <span class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></span>
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {Object.entries(supervision).map(([level, text]) => {
+          const labels: Record<string, string> = { phd: 'PhD Students', postdoc: 'Postdoctoral Researchers', master: 'M2 / Master Interns', undergrad: 'Undergraduates' };
+          return (
+            <div class="card p-5 margin-rule">
+              <h3 class="font-sans font-semibold text-ink dark:text-white mb-2">{labels[level]}</h3>
+              <p class="font-serif text-sm text-ink-muted dark:text-gray-400 leading-relaxed">{text}</p>
+            </div>
+          );
+        })}
+      </div>
+      <div class="mt-6 text-center">
+        <a href="/contact" class="btn-primary">Get in touch &rarr;</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const software = [
+  {
+    name: 'NeuroKit',
+    description: 'A Python toolkit for neural population analysis: dimensionality reduction, manifold learning, spike train statistics, and visualization.',
+    url: 'https://github.com/evasquez-lab/neurokit',
+    language: 'Python',
+    doi: '10.5281/zenodo.000000',
+  },
+  {
+    name: 'NeuroVAE',
+    description: 'Variational autoencoder for modeling Poisson spike trains with geometric latent spaces. Benchmarked on six public datasets.',
+    url: 'https://github.com/evasquez-lab/latent-neuro-vae',
+    language: 'Python / PyTorch',
+    doi: null,
+  },
+  {
+    name: 'RiemannNeuro',
+    description: 'Tools for Riemannian geometric analysis of neural population codes: geodesics, curvature, sectional distances.',
+    url: 'https://github.com/evasquez-lab/riemannian-neuro',
+    language: 'Python / JAX',
+    doi: null,
+  },
+];
+
+const datasets = [
+  {
+    name: 'Macaque V1/V4 Neuropixels — Naturalistic stimuli',
+    description: 'Simultaneous Neuropixels recordings from V1 and V4 in two macaques viewing natural images and movies. 512 channels, 5 sessions per animal.',
+    url: 'https://dandiarchive.org/dandiset/000000',
+    format: 'NWB',
+  },
+  {
+    name: 'Mouse PFC Working Memory Task',
+    description: 'Two-photon calcium imaging from mouse prefrontal cortex during a delayed non-match-to-sample task. 1200+ neurons, 20 sessions.',
+    url: 'https://figshare.com/articles/dataset/000000',
+    format: 'HDF5 / NWB',
+  },
+];
+
+const links = [
+  { category: 'Databases', items: [
+    { label: 'DANDI Archive', url: 'https://dandiarchive.org', desc: 'Open neurophysiology data' },
+    { label: 'OpenNeuro', url: 'https://openneuro.org', desc: 'MRI and EEG datasets' },
+    { label: 'Allen Brain Atlas', url: 'https://portal.brain-map.org', desc: 'Mouse and human brain data' },
+  ]},
+  { category: 'Journals', items: [
+    { label: 'eLife Neuroscience', url: 'https://elifesciences.org', desc: 'Open access, peer reviewed' },
+    { label: 'PLOS Computational Biology', url: 'https://journals.plos.org/ploscompbiol/', desc: 'Open access methods & theory' },
+    { label: 'Nature Neuroscience', url: 'https://nature.com/neuro', desc: 'High-impact neuroscience' },
+  ]},
+  { category: 'Tools', items: [
+    { label: 'MNE-Python', url: 'https://mne.tools', desc: 'EEG/MEG analysis' },
+    { label: 'SpikeInterface', url: 'https://spikeinterface.readthedocs.io', desc: 'Spike sorting pipeline' },
+    { label: 'scikit-dimension', url: 'https://scikit-dimension.readthedocs.io', desc: 'Dimensionality estimation' },
+  ]},
+];
+---
+
+<BaseLayout title="Resources" description="Software, datasets, and links from the Neural Computation Laboratory.">
+  <div class="container-lab py-12">
+    <div class="mb-10 border-b border-gray-200 dark:border-gray-800 pb-8">
+      <h1 class="section-heading">Resources</h1>
+      <p class="section-lead max-w-2xl">Open-source software, public datasets, and curated links for the neural computation community.</p>
+    </div>
+
+    <!-- Software -->
+    <section aria-labelledby="software-heading" class="mb-14">
+      <h2 id="software-heading" class="font-sans text-sm font-bold uppercase tracking-widest text-ink-faint mb-6 flex items-center gap-3">
+        Software
+        <span class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></span>
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {software.map(pkg => (
+          <article class="card p-5 flex flex-col gap-3">
+            <div class="flex items-start justify-between gap-2">
+              <h3 class="font-mono text-base font-semibold text-ink dark:text-white">{pkg.name}</h3>
+              <span class="tag text-xs">{pkg.language}</span>
+            </div>
+            <p class="font-serif text-sm text-ink-muted dark:text-gray-400 leading-relaxed flex-1">{pkg.description}</p>
+            <div class="flex gap-2 mt-auto pt-1">
+              <a href={pkg.url} target="_blank" rel="noopener" class="btn-ghost text-xs py-1">
+                GitHub &rarr;
+              </a>
+              {pkg.doi && (
+                <a href={`https://doi.org/${pkg.doi}`} target="_blank" rel="noopener" class="btn-ghost text-xs py-1">
+                  DOI
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Datasets -->
+    <section aria-labelledby="data-heading" class="mb-14">
+      <h2 id="data-heading" class="font-sans text-sm font-bold uppercase tracking-widest text-ink-faint mb-6 flex items-center gap-3">
+        Public Datasets
+        <span class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></span>
+      </h2>
+      <div class="space-y-4">
+        {datasets.map(ds => (
+          <article class="card p-5 flex items-start gap-4">
+            <div class="flex-1">
+              <h3 class="font-sans font-semibold text-ink dark:text-white mb-1">{ds.name}</h3>
+              <p class="font-serif text-sm text-ink-muted dark:text-gray-400 leading-relaxed mb-3">{ds.description}</p>
+              <div class="flex items-center gap-3">
+                <a href={ds.url} target="_blank" rel="noopener" class="link text-sm">Access dataset &rarr;</a>
+                <span class="tag text-xs">{ds.format}</span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- External links -->
+    <section aria-labelledby="links-heading">
+      <h2 id="links-heading" class="font-sans text-sm font-bold uppercase tracking-widest text-ink-faint mb-6 flex items-center gap-3">
+        Useful Links
+        <span class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></span>
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {links.map(group => (
+          <div>
+            <h3 class="font-sans text-xs font-semibold uppercase tracking-wide text-ink-faint mb-3">{group.category}</h3>
+            <ul class="space-y-2" role="list">
+              {group.items.map(link => (
+                <li>
+                  <a href={link.url} target="_blank" rel="noopener" class="group flex items-start gap-2">
+                    <svg class="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-ink-faint group-hover:text-accent transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                    <span>
+                      <span class="text-sm font-medium text-ink dark:text-white group-hover:text-accent transition-colors">{link.label}</span>
+                      <span class="block text-xs text-ink-faint">{link.desc}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

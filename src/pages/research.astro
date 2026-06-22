@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const topics = [
+  {
+    id: 'neural-geometry',
+    icon: '◈',
+    title: 'Neural Geometry',
+    tagline: 'The shape of thought',
+    body: `Neural populations encode information in the geometry of their collective activity. When many neurons fire together, their activity traces out structured manifolds in high-dimensional state space. We develop Riemannian geometric tools to characterize these manifolds — their curvature, topology, and dimensionality — and ask how this geometry constrains neural computation and communication across areas.`,
+    methods: ['Riemannian manifold learning', 'Persistent homology', 'Dimensionality reduction', 'Information geometry'],
+    pubs: ['vasquez2024riemannian', 'vasquez2022geometry'],
+  },
+  {
+    id: 'predictive-coding',
+    icon: '◉',
+    title: 'Predictive Coding',
+    tagline: 'The brain as prediction machine',
+    body: `Predictive coding theories hold that the brain minimizes prediction errors by sending only the residual between expected and received input up the cortical hierarchy. We develop normative models that account for realistic noise statistics, synaptic constraints, and learning rules, and test their predictions against large-scale recording data. A central goal is to unify predictive coding with geometric representations.`,
+    methods: ['Hierarchical Bayesian models', 'Two-photon imaging', 'Calcium imaging', 'Normative theory'],
+    pubs: ['brun2024predictive'],
+  },
+  {
+    id: 'working-memory',
+    icon: '◎',
+    title: 'Working Memory',
+    tagline: 'Holding the world in mind',
+    body: `Working memory — the ability to hold information "online" for short periods — is central to cognition, yet its neural mechanisms remain debated. We study how prefrontal cortex maintains memories through attractor dynamics in recurrent networks, using Neuropixels recordings during cognitive tasks to characterize the geometry of persistent activity and test theoretical predictions about its stability.`,
+    methods: ['Neuropixels electrophysiology', 'Attractor network models', 'Decoding analysis', 'Dimensionality reduction'],
+    pubs: ['nakamura2024working'],
+  },
+  {
+    id: 'generative-models',
+    icon: '◇',
+    title: 'Generative Models',
+    tagline: 'Learning the language of neural activity',
+    body: `We build deep generative models — principally variational autoencoders and normalizing flows — that capture the statistical structure of neural population activity. These models serve both as analytical tools for neuroscience and as testbeds for understanding representation learning in artificial networks. We pay particular attention to Poisson noise, non-stationarities, and the geometric structure of latent spaces.`,
+    methods: ['Variational autoencoders', 'Normalizing flows', 'Gaussian processes', 'Spike train statistics'],
+    pubs: ['okonkwo2023variational'],
+  },
+];
+---
+
+<BaseLayout title="Research" description="Research themes of the Neural Computation Laboratory: neural geometry, predictive coding, working memory, and generative models.">
+  <div class="container-lab py-12">
+    <div class="mb-12 border-b border-gray-200 dark:border-gray-800 pb-8">
+      <h1 class="section-heading">Research</h1>
+      <p class="section-lead max-w-2xl">
+        Our work sits at the intersection of theoretical neuroscience, machine learning, and
+        systems neuroscience. We combine mathematical theory with large-scale neural recordings
+        to understand how the brain computes.
+      </p>
+    </div>
+
+    <!-- Topic overview nav -->
+    <nav aria-label="Research topics" class="flex flex-wrap gap-2 mb-12">
+      {topics.map(t => (
+        <a
+          href={`#${t.id}`}
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-sm font-medium text-ink-muted hover:border-accent hover:text-accent transition-colors"
+        >
+          <span class="text-accent font-mono" aria-hidden="true">{t.icon}</span>
+          {t.title}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Topics -->
+    <div class="space-y-20">
+      {topics.map((topic, i) => (
+        <section id={topic.id} aria-labelledby={`topic-${topic.id}`} class="scroll-mt-24">
+          <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+            <!-- Left: number + title -->
+            <div class="lg:col-span-2">
+              <div class="sticky top-24">
+                <div class="font-mono text-5xl text-accent/20 font-bold mb-2" aria-hidden="true">
+                  0{i + 1}
+                </div>
+                <h2 id={`topic-${topic.id}`} class="font-sans text-2xl font-semibold text-ink dark:text-white mb-1">
+                  {topic.title}
+                </h2>
+                <p class="font-serif italic text-ink-muted">{topic.tagline}</p>
+                <div class="mt-4 w-8 h-1 bg-margin rounded-full"></div>
+              </div>
+            </div>
+            <!-- Right: content -->
+            <div class="lg:col-span-3 space-y-6">
+              <p class="font-serif text-base leading-relaxed text-ink dark:text-gray-200">{topic.body}</p>
+              <div>
+                <h3 class="font-sans text-xs font-bold uppercase tracking-widest text-ink-faint mb-3">Methods</h3>
+                <div class="flex flex-wrap gap-2">
+                  {topic.methods.map(m => <span class="tag">{m}</span>)}
+                </div>
+              </div>
+              <div>
+                <a href={`/publications`} class="link text-sm">Related publications &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <!-- Approach section -->
+    <section class="mt-20 bg-ink text-white rounded-xl p-8 md:p-10" aria-labelledby="approach-heading">
+      <h2 id="approach-heading" class="font-sans text-xl font-semibold mb-6">Our Approach</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[
+          { title: 'Theory first', body: 'We build mathematical models that make quantitative predictions before going to the data.' },
+          { title: 'Large-scale data', body: 'We record from hundreds of neurons simultaneously using Neuropixels and two-photon imaging.' },
+          { title: 'Open science', body: 'All code and data are openly available. We build reusable tools for the community.' },
+        ].map(item => (
+          <div class="border-l-2 border-margin pl-4">
+            <h3 class="font-sans font-semibold text-white mb-2">{item.title}</h3>
+            <p class="font-serif text-sm text-gray-300 leading-relaxed">{item.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

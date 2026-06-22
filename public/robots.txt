@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://compneuro-lab.university.edu/sitemap-index.xml

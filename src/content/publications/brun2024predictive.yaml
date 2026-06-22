@@ -1,0 +1,27 @@
+title: "Predictive coding with structured noise in hierarchical cortical circuits"
+authors:
+  - "T. Brun"
+  - "E. Vasquez"
+year: 2024
+venue: "PLOS Computational Biology"
+venueShort: "PLOS Comput. Biol."
+type: journal
+doi: "10.1371/journal.pcbi.1012345"
+pdf: "/pdfs/brun2024predictive.pdf"
+code: "https://github.com/evasquez-lab/predictive-coding"
+abstract: >
+  We present a theoretical framework for predictive coding that accounts for structured noise
+  correlations in cortical circuits. Unlike classical predictive coding models that assume
+  independent noise, our model predicts that error signals are whitened by the local circuit
+  architecture, leading to efficient coding of prediction errors. We validate these predictions
+  using two-photon calcium imaging data from mouse visual cortex during naturalistic stimulation.
+keywords:
+  - predictive coding
+  - noise correlations
+  - hierarchical models
+  - visual cortex
+  - efficient coding
+categories:
+  - Theory
+  - Systems Neuroscience
+featured: true

@@ -1,0 +1,29 @@
+---
+// Back to top button — appears after scrolling down
+---
+
+<button
+  id="back-to-top"
+  aria-label="Back to top"
+  class="fixed bottom-6 right-6 z-40 p-2.5 bg-ink text-white rounded-full shadow-lg opacity-0 pointer-events-none transition-all duration-300 hover:bg-accent focus-visible:ring-2 focus-visible:ring-accent"
+>
+  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
+  </svg>
+</button>
+
+<script>
+  const btn = document.getElementById('back-to-top')!;
+
+  window.addEventListener('scroll', () => {
+    const show = window.scrollY > 400;
+    btn.classList.toggle('opacity-100', show);
+    btn.classList.toggle('pointer-events-auto', show);
+    btn.classList.toggle('opacity-0', !show);
+    btn.classList.toggle('pointer-events-none', !show);
+  }, { passive: true });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>

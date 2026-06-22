@@ -1,0 +1,268 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import PublicationCard from '../../components/publications/PublicationCard.astro';
+
+export async function getStaticPaths() {
+  const members = await getCollection('team');
+  return members.map(member => ({ params: { slug: member.id }, props: { member } }));
+}
+
+interface Props { member: CollectionEntry<'team'>; }
+const { member } = Astro.props;
+const { Content } = await render(member);
+
+const {
+  name, role, position, photo, email, website, orcid, googleScholar,
+  github, linkedin, twitter, cv, researchInterests, joinedYear,
+  awards, grants, invitedTalks, mediaAppearances,
+} = member.data;
+
+// Pull publications where this person is an author
+const allPubs = await getCollection('publications');
+const memberPubs = allPubs
+  .filter(p => p.data.authors.some(a => a.includes(name.split(' ').pop()!)))
+  .sort((a, b) => b.data.year - a.data.year);
+
+const isPI = position === 'PI';
+---
+
+<BaseLayout
+  title={name}
+  description={`${name} — ${role} at the Neural Computation Laboratory.`}
+>
+  <div class="container-lab py-12">
+    <!-- Back link -->
+    <nav aria-label="Breadcrumb" class="mb-8">
+      <a href="/team" class="text-sm text-ink-faint hover:text-accent transition-colors flex items-center gap-1">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        </svg>
+        All team members
+      </a>
+    </nav>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+      <!-- Sidebar -->
+      <aside class="lg:col-span-1">
+        <div class="sticky top-24 space-y-6">
+          <!-- Photo -->
+          <div class="aspect-square max-w-xs mx-auto lg:mx-0 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-md">
+            {photo ? (
+              <img src={photo} alt={`Portrait of ${name}`} class="w-full h-full object-cover" loading="eager" />
+            ) : (
+              <div class="w-full h-full flex items-center justify-center text-6xl font-bold text-gray-300 select-none">
+                {name.charAt(0)}
+              </div>
+            )}
+          </div>
+
+          <!-- Identity -->
+          <div>
+            <h1 class="font-sans text-2xl font-semibold text-ink dark:text-white">{name}</h1>
+            <p class="text-accent font-medium mt-0.5">{role}</p>
+            {joinedYear && (
+              <p class="text-xs text-ink-faint mt-1">Member since {joinedYear}</p>
+            )}
+          </div>
+
+          <!-- Research interests -->
+          {researchInterests.length > 0 && (
+            <div>
+              <h2 class="font-sans text-xs font-bold uppercase tracking-widest text-ink-faint mb-2">Research Interests</h2>
+              <div class="flex flex-wrap gap-1.5">
+                {researchInterests.map(r => <span class="tag">{r}</span>)}
+              </div>
+            </div>
+          )}
+
+          <!-- Links -->
+          <div>
+            <h2 class="font-sans text-xs font-bold uppercase tracking-widest text-ink-faint mb-3">Links</h2>
+            <ul class="space-y-2 text-sm" role="list">
+              {email && (
+                <li>
+                  <a href={`mailto:${email}`} class="flex items-center gap-2 text-ink-muted hover:text-accent transition-colors">
+                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    Email
+                  </a>
+                </li>
+              )}
+              {website && (
+                <li>
+                  <a href={website} target="_blank" rel="noopener" class="flex items-center gap-2 text-ink-muted hover:text-accent transition-colors">
+                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                    </svg>
+                    Website
+                  </a>
+                </li>
+              )}
+              {orcid && (
+                <li>
+                  <a href={`https://orcid.org/${orcid}`} target="_blank" rel="noopener" class="flex items-center gap-2 text-ink-muted hover:text-accent transition-colors">
+                    <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zm-1.354 7.454H8.852V16.6h1.794V7.454zm-.897-2.877a1.132 1.132 0 100 2.264 1.132 1.132 0 000-2.264zm4.426 2.877h-1.794V16.6h1.794v-3.572c0-1.902 2.502-2.07 2.502 0V16.6h1.794v-4.277c0-3.394-3.84-3.271-4.296-1.599V7.454z"/>
+                    </svg>
+                    ORCID {orcid}
+                  </a>
+                </li>
+              )}
+              {googleScholar && (
+                <li>
+                  <a href={googleScholar} target="_blank" rel="noopener" class="flex items-center gap-2 text-ink-muted hover:text-accent transition-colors">
+                    <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5h4.5V24H12V9.5h7.5L12 0z"/>
+                    </svg>
+                    Google Scholar
+                  </a>
+                </li>
+              )}
+              {github && (
+                <li>
+                  <a href={github} target="_blank" rel="noopener" class="flex items-center gap-2 text-ink-muted hover:text-accent transition-colors">
+                    <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                    </svg>
+                    GitHub
+                  </a>
+                </li>
+              )}
+              {twitter && (
+                <li>
+                  <a href={`https://twitter.com/${twitter.replace('@','')}`} target="_blank" rel="noopener" class="flex items-center gap-2 text-ink-muted hover:text-accent transition-colors">
+                    <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                    {twitter}
+                  </a>
+                </li>
+              )}
+              {cv && (
+                <li>
+                  <a href={cv} download class="flex items-center gap-2 text-ink-muted hover:text-accent transition-colors">
+                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    Download CV
+                  </a>
+                </li>
+              )}
+            </ul>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <div class="lg:col-span-2 space-y-10">
+        <!-- Biography -->
+        <section aria-labelledby="bio-heading">
+          <h2 id="bio-heading" class="font-sans text-xs font-bold uppercase tracking-widest text-ink-faint mb-4">Biography</h2>
+          <div class="prose prose-sm max-w-none dark:prose-invert font-serif">
+            <Content />
+          </div>
+        </section>
+
+        <!-- PI-only: Awards -->
+        {isPI && awards && awards.length > 0 && (
+          <section aria-labelledby="awards-heading">
+            <h2 id="awards-heading" class="font-sans text-xs font-bold uppercase tracking-widest text-ink-faint mb-4">Awards & Honours</h2>
+            <ul class="space-y-3" role="list">
+              {awards.map(a => (
+                <li class="flex items-start gap-3">
+                  <span class="flex-shrink-0 mt-0.5 w-5 h-5 text-yellow-500">
+                    <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="font-sans text-sm font-medium text-ink dark:text-white">{a.title}</p>
+                    <p class="text-xs text-ink-muted">{a.org} &middot; {a.year}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <!-- PI-only: Grants -->
+        {isPI && grants && grants.length > 0 && (
+          <section aria-labelledby="grants-heading">
+            <h2 id="grants-heading" class="font-sans text-xs font-bold uppercase tracking-widest text-ink-faint mb-4">Grants & Funding</h2>
+            <div class="space-y-3">
+              {grants.map(g => (
+                <div class="card p-4">
+                  <div class="flex items-start justify-between gap-2">
+                    <div>
+                      <p class="font-sans text-sm font-semibold text-ink dark:text-white">{g.title}</p>
+                      <p class="text-xs text-ink-muted mt-0.5">{g.funder} &middot; {g.years}</p>
+                    </div>
+                    {g.amount && (
+                      <span class="flex-shrink-0 text-sm font-mono font-medium text-accent">{g.amount}</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <!-- PI-only: Invited talks -->
+        {isPI && invitedTalks && invitedTalks.length > 0 && (
+          <section aria-labelledby="talks-heading">
+            <h2 id="talks-heading" class="font-sans text-xs font-bold uppercase tracking-widest text-ink-faint mb-4">Selected Invited Talks</h2>
+            <ul class="space-y-3" role="list">
+              {invitedTalks.map(t => (
+                <li class="flex items-start gap-3 py-2 border-b border-gray-100 dark:border-gray-800 last:border-0">
+                  <span class="flex-shrink-0 font-mono text-xs text-ink-faint w-10 pt-0.5">{t.year}</span>
+                  <div>
+                    <p class="font-sans text-sm font-medium text-ink dark:text-white">{t.title}</p>
+                    <p class="text-xs text-ink-muted">{t.venue}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <!-- PI-only: Media -->
+        {isPI && mediaAppearances && mediaAppearances.length > 0 && (
+          <section aria-labelledby="media-heading">
+            <h2 id="media-heading" class="font-sans text-xs font-bold uppercase tracking-widest text-ink-faint mb-4">Media</h2>
+            <ul class="space-y-3" role="list">
+              {mediaAppearances.map(m => (
+                <li class="flex items-start gap-3">
+                  <span class="flex-shrink-0 font-mono text-xs text-ink-faint w-16 pt-0.5">{m.date}</span>
+                  <div>
+                    {m.url ? (
+                      <a href={m.url} target="_blank" rel="noopener" class="font-sans text-sm font-medium text-accent hover:underline">{m.title}</a>
+                    ) : (
+                      <p class="font-sans text-sm font-medium text-ink dark:text-white">{m.title}</p>
+                    )}
+                    <p class="text-xs text-ink-muted">{m.outlet}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <!-- Publications -->
+        {memberPubs.length > 0 && (
+          <section aria-labelledby="pubs-heading">
+            <h2 id="pubs-heading" class="font-sans text-xs font-bold uppercase tracking-widest text-ink-faint mb-4">
+              Publications ({memberPubs.length})
+            </h2>
+            <div class="space-y-3">
+              {memberPubs.map(pub => (
+                <PublicationCard pub={pub} view="list" highlightAuthor={name.split(' ').pop()} />
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+    </div>
+  </div>
+</BaseLayout>
