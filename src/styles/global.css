@@ -196,13 +196,13 @@
 @utility margin-rule {
   position: relative;
   padding-left: 1rem;
-}
-@utility margin-rule::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 1px;
-  background-color: var(--color-rule);
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background-color: var(--color-rule);
+  }
 }
 
 /* ── Print ─────────────────────────────────────────────── */
