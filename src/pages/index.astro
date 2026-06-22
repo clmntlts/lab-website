@@ -19,52 +19,70 @@ const recentNews = allNews
   .slice(0, 3);
 
 const researchTopics = [
-  { label: '01', title: 'Neural Geometry', desc: 'How the shape of population activity constrains neural computation.' },
-  { label: '02', title: 'Predictive Coding', desc: 'Normative theories of hierarchical inference in cortical circuits.' },
-  { label: '03', title: 'Working Memory', desc: 'Dynamical mechanisms of persistent activity in prefrontal cortex.' },
-  { label: '04', title: 'Generative Models', desc: 'Deep latent variable models for neural population dynamics.' },
+  {
+    label: '01',
+    title: 'Reading & Spelling Development',
+    desc: 'How children acquire written language skills, and what cognitive and linguistic factors drive progress.',
+  },
+  {
+    label: '02',
+    title: 'Literacy Prerequisites',
+    desc: 'The role of metaphonological awareness and rapid automatized naming in predicting reading outcomes.',
+  },
+  {
+    label: '03',
+    title: 'Handwriting & Graphomotor Skills',
+    desc: 'Development of the handwriting gesture, its connection to orthographic learning, and motor dysfunctions in dyslexia.',
+  },
+  {
+    label: '04',
+    title: 'Intervention & Clinical Applications',
+    desc: 'Evidence-based interventions for dyslexia and dysorthography, with tools for speech-language pathologists and teachers.',
+  },
 ];
 ---
 
-<BaseLayout>
+<BaseLayout
+  description="DeLi Lab studies the acquisition and disorders of written language at UCLouvain — reading, spelling, and handwriting research with clinical and educational applications."
+>
 
   <!-- ── Hero ─────────────────────────────────────────── -->
   <section class="container-lab pt-20 pb-16 md:pt-28 md:pb-20" aria-label="Lab introduction">
     <p class="eyebrow mb-6">{SITE.institution} &nbsp;·&nbsp; {SITE.department}</p>
     <h1 class="font-sans font-semibold tracking-tight leading-none text-ink mb-8"
         style="font-size: clamp(2.5rem, 6vw, 4.5rem);">
-      Neural<br />Computation<br />
+      Development<br />of Literacy<br />
       <span class="text-accent">Laboratory</span>
     </h1>
-    <p class="font-serif text-lg text-ink-muted leading-relaxed max-w-xl mb-10">
-      We investigate how neural circuits represent, transform, and communicate
-      information — bridging mathematics, machine learning, and experimental
-      neuroscience.
+    <p class="font-serif leading-relaxed max-w-xl mb-10"
+       style="font-size: 1.0625rem; color: var(--color-ink-muted);">
+      We study how children acquire written language — reading, spelling, and handwriting —
+      and what goes wrong in developmental disorders such as dyslexia and dysorthography.
+      Our work bridges cognitive psychology, neuroscience, and educational practice.
     </p>
     <div class="flex flex-wrap gap-3">
-      <a href="/research" class="btn-primary">Research &rarr;</a>
+      <a href="/research" class="btn-primary">Our Research &rarr;</a>
       <a href="/publications" class="btn-ghost">Publications</a>
-      <a href="/contact" class="btn-accent">Join the Lab</a>
+      <a href="/contact" class="btn-accent">Participate</a>
     </div>
   </section>
 
-  <hr class="container-lab" style="margin-left: auto; margin-right: auto; max-width: 72rem; padding: 0 4rem;" />
-  <div style="border-top: 1px solid var(--color-rule); margin: 0 0;"></div>
+  <div style="border-top: 1px solid var(--color-rule);"></div>
 
   <!-- ── Stats ─────────────────────────────────────────── -->
-  <section class="container-lab py-10" aria-label="Lab statistics">
-    <dl class="grid grid-cols-2 md:grid-cols-4 gap-px bg-rule" style="background-color: var(--color-rule);">
+  <section class="container-lab py-10" aria-label="Lab at a glance">
+    <dl class="grid grid-cols-2 md:grid-cols-4 gap-px" style="background-color: var(--color-rule);">
       {[
-        { value: '5',   label: 'Team members' },
-        { value: '20+', label: 'Publications' },
-        { value: '2',   label: 'Active grants' },
-        { value: String(new Date().getFullYear() - SITE.founded), label: 'Years active' },
+        { value: '15+', label: 'Team members' },
+        { value: '80+', label: 'Publications' },
+        { value: String(new Date().getFullYear() - SITE.founded), label: 'Years of research' },
+        { value: 'BE · FR · INT', label: 'Research network' },
       ].map(stat => (
-        <div class="bg-paper px-6 py-5">
+        <div class="px-6 py-5" style="background-color: var(--color-paper);">
           <dt class="font-sans text-2xl font-semibold text-ink tracking-tight"
               style="font-variant-numeric: tabular-nums;">{stat.value}</dt>
-          <dd class="mt-0.5 text-xs text-ink-faint font-sans uppercase tracking-widest"
-              style="letter-spacing: 0.08em;">{stat.label}</dd>
+          <dd class="mt-0.5 font-sans uppercase text-ink-faint"
+              style="font-size: 0.6875rem; letter-spacing: 0.08em;">{stat.label}</dd>
         </div>
       ))}
     </dl>
@@ -77,16 +95,20 @@ const researchTopics = [
     <header class="mb-10">
       <p class="eyebrow mb-2">Focus areas</p>
       <h2 id="themes-heading" class="section-heading">Research Themes</h2>
-      <p class="section-lead">Four interconnected questions about computation in biological and artificial neural networks.</p>
+      <p class="section-lead">
+        Four interconnected questions about how children learn to read and write —
+        and what can be done when the process goes awry.
+      </p>
     </header>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-px" style="background-color: var(--color-rule);">
       {researchTopics.map((topic) => (
-        <div class="bg-paper p-6 group">
+        <div class="p-6 group" style="background-color: var(--color-paper);">
           <span class="font-mono text-xs text-ink-faint mb-4 block">{topic.label}</span>
-          <h3 class="font-sans font-semibold text-ink text-base mb-2 group-hover:text-accent transition-colors duration-150">
+          <h3 class="font-sans font-semibold text-sm text-ink mb-2
+                     group-hover:text-accent transition-colors duration-150">
             {topic.title}
           </h3>
-          <p class="text-sm text-ink-muted font-serif leading-relaxed">{topic.desc}</p>
+          <p class="font-serif text-sm text-ink-muted leading-relaxed">{topic.desc}</p>
         </div>
       ))}
     </div>
@@ -103,10 +125,15 @@ const researchTopics = [
       <p class="eyebrow mb-2">Recent work</p>
       <h2 id="pubs-heading" class="section-heading">Selected Publications</h2>
     </header>
-    <div class="divide-y" style="border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule);">
-      {featuredPubs.map(pub => (
-        <PublicationCard pub={pub} view="list" />
-      ))}
+    <div style="border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule);">
+      {featuredPubs.length > 0
+        ? featuredPubs.map(pub => <PublicationCard pub={pub} view="list" />)
+        : (
+          <p class="py-8 text-sm text-ink-muted font-serif italic">
+            Publications are being updated — see the full list below.
+          </p>
+        )
+      }
     </div>
     <div class="mt-6 text-right">
       <a href="/publications" class="link text-sm">All publications &rarr;</a>
@@ -120,7 +147,10 @@ const researchTopics = [
     <header class="mb-8">
       <p class="eyebrow mb-2">People</p>
       <h2 id="team-heading" class="section-heading">The Team</h2>
-      <p class="section-lead">Researchers from diverse backgrounds united by curiosity about the brain.</p>
+      <p class="section-lead">
+        Speech-language pathologists, psychologists, and educators united by a shared
+        interest in how written language develops and can be supported.
+      </p>
     </header>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-px" style="background-color: var(--color-rule);">
       {sortedTeam.slice(0, 4).map(member => (
@@ -141,26 +171,49 @@ const researchTopics = [
       <h2 id="news-heading" class="section-heading">Latest News</h2>
     </header>
     <div style="border-top: 1px solid var(--color-rule);">
-      {recentNews.map(item => (
-        <article class="py-5 flex gap-6" style="border-bottom: 1px solid var(--color-rule);">
-          <time class="flex-shrink-0 font-mono text-xs text-ink-faint pt-0.5 w-24 leading-relaxed"
-                datetime={item.data.date.toISOString()}>
-            {item.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
-          </time>
-          <div>
-            <span class="eyebrow mb-1 block">{item.data.category}</span>
-            <h3 class="font-sans font-semibold text-ink text-sm leading-snug mb-1">
-              <a href={`/news/${item.id}`} class="hover:text-accent transition-colors duration-150">
-                {item.data.title}
-              </a>
-            </h3>
-            <p class="text-sm text-ink-muted font-serif leading-relaxed">{item.data.summary}</p>
-          </div>
-        </article>
-      ))}
+      {recentNews.length > 0
+        ? recentNews.map(item => (
+          <article class="py-5 flex gap-6"
+                   style="border-bottom: 1px solid var(--color-rule);">
+            <time class="flex-shrink-0 font-mono text-xs text-ink-faint pt-0.5 w-24 leading-relaxed"
+                  datetime={item.data.date.toISOString()}>
+              {item.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+            </time>
+            <div>
+              <span class="eyebrow mb-1 block">{item.data.category}</span>
+              <h3 class="font-sans font-semibold text-ink text-sm leading-snug mb-1">
+                <a href={`/news/${item.id}`}
+                   class="hover:text-accent transition-colors duration-150">{item.data.title}</a>
+              </h3>
+              <p class="text-sm text-ink-muted font-serif leading-relaxed">{item.data.summary}</p>
+            </div>
+          </article>
+        ))
+        : (
+          <p class="py-8 text-sm text-ink-muted font-serif italic"
+             style="border-bottom: 1px solid var(--color-rule);">
+            News items are being updated.
+          </p>
+        )
+      }
     </div>
     <div class="mt-6 text-right">
       <a href="/news" class="link text-sm">All news &rarr;</a>
+    </div>
+  </section>
+
+  <!-- ── Participate CTA ───────────────────────────────── -->
+  <section style="border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule);">
+    <div class="container-lab py-14">
+      <div class="max-w-xl">
+        <p class="eyebrow mb-3">Participate in research</p>
+        <h2 class="section-heading mb-3">Support literacy science</h2>
+        <p class="section-lead" style="margin-bottom: 1.5rem;">
+          We regularly recruit children and adults for studies on reading, spelling,
+          and handwriting. Participation is free, voluntary, and takes place at UCLouvain.
+        </p>
+        <a href="/contact" class="btn-primary">Get in touch &rarr;</a>
+      </div>
     </div>
   </section>
 
