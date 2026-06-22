@@ -3,14 +3,30 @@
 @import '@fontsource/source-serif-4/400-italic.css';
 @import '@fontsource/source-serif-4/600.css';
 @import '@fontsource/jetbrains-mono/400.css';
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@theme {
+  --color-ink: #1A1A2E;
+  --color-paper: #F7F7F5;
+  --color-accent: #2563EB;
+  --color-accent-muted: #DBEAFE;
+  --color-accent-dark: #1D4ED8;
+  --color-margin: #E53E3E;
+  --color-surface: #FFFFFF;
+  --color-ink-muted: #4B5563;
+  --color-ink-faint: #9CA3AF;
+
+  --font-family-sans: 'Inter Variable', Inter, system-ui, sans-serif;
+  --font-family-serif: 'Source Serif 4', Georgia, serif;
+  --font-family-mono: 'JetBrains Mono', Menlo, monospace;
+}
+
+@variant dark (&:where(.dark, .dark *));
 
 @layer base {
   :root {
-    --margin-rule: theme('colors.margin');
+    --margin-rule: var(--color-margin);
     scroll-behavior: smooth;
   }
 
@@ -35,12 +51,10 @@
     @apply bg-accent text-white;
   }
 
-  /* Focus visible — accessibility */
   *:focus-visible {
     @apply outline-none ring-2 ring-accent ring-offset-2;
   }
 
-  /* The signature margin rule */
   .margin-rule {
     position: relative;
     padding-left: 1.5rem;
@@ -56,7 +70,6 @@
     border-radius: 1px;
   }
 
-  /* Skip to content */
   .skip-link {
     @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:rounded;
   }
@@ -104,7 +117,6 @@
   }
 }
 
-/* Print styles */
 @media print {
   nav, footer, .no-print { display: none !important; }
   body { font-size: 11pt; color: #000; background: #fff; }
@@ -113,7 +125,6 @@
   @page { margin: 2cm; }
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
