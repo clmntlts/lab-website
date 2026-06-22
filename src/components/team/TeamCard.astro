@@ -11,21 +11,15 @@ const { name, role, photo, email, orcid, googleScholar, github, researchInterest
 const slug = member.id;
 ---
 
-<article class="card p-5 flex gap-4 group hover:border-accent/20 transition-colors">
+<article class="bg-paper flex gap-4 p-5 group" style="border-bottom: none;">
   <!-- Photo -->
-  <a href={`/team/${slug}`} class="flex-shrink-0" aria-hidden="true" tabindex="-1">
-    <div class="w-16 h-16 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 ring-2 ring-transparent group-hover:ring-accent/30 transition-all">
+  <a href={`/team/${slug}`} class="flex-shrink-0" tabindex="-1" aria-hidden="true">
+    <div class="w-14 h-14 overflow-hidden bg-gray-100" style="border: 1px solid var(--color-rule);">
       {photo ? (
-        <img
-          src={photo}
-          alt={name}
-          width="64"
-          height="64"
-          class="w-full h-full object-cover"
-          loading="lazy"
-        />
+        <img src={photo} alt={name} width="56" height="56"
+             class="w-full h-full object-cover" loading="lazy" />
       ) : (
-        <div class="w-full h-full flex items-center justify-center text-2xl font-bold text-gray-400 select-none">
+        <div class="w-full h-full flex items-center justify-center font-sans text-lg font-semibold text-ink-faint select-none">
           {name.charAt(0)}
         </div>
       )}
@@ -34,41 +28,40 @@ const slug = member.id;
 
   <!-- Info -->
   <div class="flex-1 min-w-0">
-    <h3 class="font-sans font-semibold text-ink dark:text-white leading-tight">
-      <a href={`/team/${slug}`} class="hover:text-accent transition-colors">{name}</a>
+    <h3 class="font-sans font-semibold text-sm text-ink leading-tight">
+      <a href={`/team/${slug}`} class="hover:text-accent transition-colors duration-150">{name}</a>
     </h3>
-    <p class="text-sm text-accent font-medium">{role}</p>
+    <p class="text-xs text-ink-muted mt-0.5 font-sans">{role}</p>
 
-    {!compact && (
-      <div class="mt-2 flex flex-wrap gap-1">
+    {!compact && researchInterests.length > 0 && (
+      <div class="mt-2 flex flex-wrap gap-1.5">
         {researchInterests.slice(0, 3).map(interest => (
-          <span class="tag text-xs">{interest}</span>
+          <span class="tag">{interest}</span>
         ))}
       </div>
     )}
 
-    <!-- Links -->
-    <div class="mt-2 flex items-center gap-2">
+    <div class="mt-2 flex items-center gap-3">
       {email && (
-        <a href={`mailto:${email}`} aria-label={`Email ${name}`} class="text-ink-faint hover:text-accent transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-          </svg>
-        </a>
+        <a href={`mailto:${email}`} aria-label={`Email ${name}`}
+           class="text-ink-faint hover:text-ink transition-colors text-xs">✉</a>
       )}
       {orcid && (
-        <a href={`https://orcid.org/${orcid}`} aria-label={`ORCID profile of ${name}`} target="_blank" rel="noopener" class="text-ink-faint hover:text-accent transition-colors">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <a href={`https://orcid.org/${orcid}`} aria-label="ORCID" target="_blank" rel="noopener"
+           class="text-ink-faint hover:text-ink transition-colors">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zm-1.354 7.454H8.852V16.6h1.794V7.454zm-.897-2.877a1.132 1.132 0 100 2.264 1.132 1.132 0 000-2.264zm4.426 2.877h-1.794V16.6h1.794v-3.572c0-1.902 2.502-2.07 2.502 0V16.6h1.794v-4.277c0-3.394-3.84-3.271-4.296-1.599V7.454z"/>
           </svg>
         </a>
       )}
       {googleScholar && (
-        <a href={googleScholar} aria-label={`Google Scholar profile of ${name}`} target="_blank" rel="noopener" class="text-ink-faint hover:text-accent transition-colors text-xs font-bold">GS</a>
+        <a href={googleScholar} aria-label="Google Scholar" target="_blank" rel="noopener"
+           class="font-mono text-xs text-ink-faint hover:text-ink transition-colors tracking-tight">GS</a>
       )}
       {github && (
-        <a href={github} aria-label={`GitHub profile of ${name}`} target="_blank" rel="noopener" class="text-ink-faint hover:text-accent transition-colors">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <a href={github} aria-label="GitHub" target="_blank" rel="noopener"
+           class="text-ink-faint hover:text-ink transition-colors">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
           </svg>
         </a>

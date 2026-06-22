@@ -6,36 +6,37 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* ── Design tokens ─────────────────────────────────────── */
 @theme {
-  --color-ink: #1A1A2E;
-  --color-paper: #F7F7F5;
-  --color-accent: #2563EB;
-  --color-accent-muted: #DBEAFE;
-  --color-accent-dark: #1D4ED8;
-  --color-margin: #E53E3E;
-  --color-surface: #FFFFFF;
-  --color-ink-muted: #4B5563;
-  --color-ink-faint: #9CA3AF;
+  --color-ink:          #111111;
+  --color-paper:        #FAFAF8;
+  --color-accent:       #1D4ED8;
+  --color-accent-muted: #EFF4FF;
+  --color-accent-dark:  #1E3A8A;
+  --color-rule:         #E5E5E2;
+  --color-surface:      #FFFFFF;
+  --color-ink-muted:    #5C5C5C;
+  --color-ink-faint:    #9E9E9E;
+  --color-margin:       #1D4ED8;
 
-  --font-family-sans: 'Inter Variable', Inter, system-ui, sans-serif;
-  --font-family-serif: 'Source Serif 4', Georgia, serif;
-  --font-family-mono: 'JetBrains Mono', Menlo, monospace;
+  --font-family-sans:   'Inter Variable', Inter, system-ui, sans-serif;
+  --font-family-serif:  'Source Serif 4', Georgia, serif;
+  --font-family-mono:   'JetBrains Mono', Menlo, monospace;
 }
 
 @variant dark (&:where(.dark, .dark *));
 
+/* ── Base ──────────────────────────────────────────────── */
 @layer base {
-  :root {
-    --margin-rule: var(--color-margin);
-    scroll-behavior: smooth;
-  }
+  :root { scroll-behavior: smooth; }
 
   html {
     font-family: var(--font-family-sans);
+    font-size: 16px;
     color: var(--color-ink);
+    background-color: var(--color-paper);
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: "kern" 1, "liga" 1;
+    font-feature-settings: "kern" 1, "liga" 1, "tnum" 1;
   }
 
   body {
@@ -44,158 +45,172 @@
     min-height: 100vh;
   }
 
-  .dark body {
-    background-color: var(--color-ink);
-    color: var(--color-paper);
-  }
+  .dark html, .dark body { background-color: #0d0d0d; color: #d4d4d4; }
 
   ::selection {
     background-color: var(--color-accent-muted);
     color: var(--color-accent-dark);
   }
 
-  .dark ::selection {
-    background-color: var(--color-accent);
-    color: #fff;
-  }
-
   *:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--color-accent);
+    outline: 1.5px solid var(--color-accent);
+    outline-offset: 2px;
   }
 
-  .margin-rule {
-    position: relative;
-    padding-left: 1.5rem;
-  }
-  .margin-rule::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background-color: var(--margin-rule);
-    border-radius: 1px;
+  hr {
+    border: none;
+    border-top: 1px solid var(--color-rule);
+    margin: 0;
   }
 
   .skip-link {
     position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    white-space: nowrap;
-    border-width: 0;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0);
+    white-space: nowrap; border-width: 0;
   }
   .skip-link:focus {
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
-    z-index: 50;
-    width: auto;
-    height: auto;
-    padding: 0.5rem 1rem;
-    clip: auto;
-    white-space: normal;
-    background-color: var(--color-accent);
-    color: #fff;
-    border-radius: 0.25rem;
+    position: fixed; top: 1rem; left: 1rem; z-index: 50;
+    width: auto; height: auto;
+    padding: 0.5rem 1rem; clip: auto; white-space: normal;
+    background-color: var(--color-ink); color: var(--color-paper);
+    font-size: 0.8125rem;
   }
 }
 
+/* ── Utilities ─────────────────────────────────────────── */
+
 @utility container-lab {
-  max-width: var(--breakpoint-xl);
+  max-width: 72rem;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  @media (width >= theme(--breakpoint-sm)) { padding-left: 1.5rem; padding-right: 1.5rem; }
-  @media (width >= theme(--breakpoint-lg)) { padding-left: 2rem; padding-right: 2rem; }
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  @media (width >= 640px)  { padding-left: 2.5rem;  padding-right: 2.5rem;  }
+  @media (width >= 1024px) { padding-left: 4rem;    padding-right: 4rem;    }
+}
+
+/* Eyebrow — tiny all-caps label above headings */
+@utility eyebrow {
+  font-family: var(--font-family-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
 }
 
 @utility section-heading {
   font-family: var(--font-family-sans);
-  font-size: var(--text-3xl);
+  font-size: 1.375rem;
   font-weight: 600;
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: -0.025em;
   color: var(--color-ink);
-  margin-bottom: 0.5rem;
+  line-height: 1.25;
+  margin-bottom: 0.25rem;
 }
 
 @utility section-lead {
   font-family: var(--font-family-serif);
-  font-size: var(--text-lg);
+  font-size: 1rem;
   color: var(--color-ink-muted);
-  line-height: var(--leading-relaxed);
+  line-height: 1.7;
+  max-width: 56ch;
   margin-bottom: 2rem;
 }
 
+/* Flat card — no shadow, just border */
 @utility card {
-  background-color: #fff;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-gray-100);
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow 200ms;
-  &:hover { box-shadow: var(--shadow-md); }
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-rule);
+  transition: border-color 150ms;
+  &:hover { border-color: #BBBBB8; }
 }
 
 @utility tag {
   display: inline-flex;
   align-items: center;
-  padding: 0.125rem 0.625rem;
-  border-radius: 9999px;
-  font-size: var(--text-xs);
+  padding: 0.0625rem 0.4375rem;
+  border: 1px solid var(--color-rule);
+  font-size: 0.6875rem;
   font-weight: 500;
-  background-color: var(--color-accent-muted);
-  color: var(--color-accent-dark);
+  letter-spacing: 0.02em;
+  color: var(--color-ink-muted);
+  background-color: transparent;
+  line-height: 1.6;
 }
 
 @utility btn-primary {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background-color: var(--color-accent);
-  color: #fff;
-  font-size: var(--text-sm);
+  gap: 0.375rem;
+  padding: 0.5625rem 1.125rem;
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  font-size: 0.8125rem;
   font-weight: 500;
-  border-radius: var(--radius-md);
-  transition: background-color var(--transition-colors);
-  &:hover { background-color: var(--color-accent-dark); }
-  &:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  letter-spacing: 0.01em;
+  border: 1px solid var(--color-ink);
+  transition: background-color 150ms;
+  &:hover { background-color: #2a2a2a; }
 }
 
 @utility btn-ghost {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  color: var(--color-accent);
-  font-size: var(--text-sm);
+  gap: 0.375rem;
+  padding: 0.4375rem 0.875rem;
+  color: var(--color-ink-muted);
+  font-size: 0.8125rem;
   font-weight: 500;
-  border-radius: var(--radius-md);
-  transition: background-color var(--transition-colors);
+  border: 1px solid var(--color-rule);
+  background-color: transparent;
+  transition: color 150ms, border-color 150ms;
+  &:hover { color: var(--color-ink); border-color: #BBBBB8; }
+}
+
+@utility btn-accent {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5625rem 1.125rem;
+  background-color: transparent;
+  color: var(--color-accent);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: 1px solid var(--color-accent);
+  transition: background-color 150ms;
   &:hover { background-color: var(--color-accent-muted); }
 }
 
 @utility link {
   color: var(--color-accent);
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: 3px;
   text-decoration-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
-  transition: color var(--transition-colors), text-decoration-color var(--transition-colors);
-  &:hover { color: var(--color-accent-dark); text-decoration-color: var(--color-accent); }
+  transition: text-decoration-color 150ms;
+  &:hover { text-decoration-color: var(--color-accent); }
 }
 
+@utility margin-rule {
+  position: relative;
+  padding-left: 1rem;
+}
+@utility margin-rule::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 1px;
+  background-color: var(--color-rule);
+}
+
+/* ── Print ─────────────────────────────────────────────── */
 @media print {
   nav, footer, .no-print { display: none !important; }
   body { font-size: 11pt; color: #000; background: #fff; }
   a { color: #000; text-decoration: underline; }
-  .card { border: 1px solid #ccc; box-shadow: none; }
-  @page { margin: 2cm; }
+  @page { margin: 2.5cm; }
 }
 
 @media (prefers-reduced-motion: reduce) {

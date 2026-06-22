@@ -19,145 +19,142 @@ const recentNews = allNews
   .slice(0, 3);
 
 const researchTopics = [
-  { icon: '◈', title: 'Neural Geometry', desc: 'How the shape of population activity constrains neural computation.' },
-  { icon: '◉', title: 'Predictive Coding', desc: 'Normative theories of hierarchical inference in cortical circuits.' },
-  { icon: '◎', title: 'Working Memory', desc: 'Dynamical mechanisms of persistent activity in prefrontal cortex.' },
-  { icon: '◇', title: 'Generative Models', desc: 'Deep latent variable models for neural population dynamics.' },
+  { label: '01', title: 'Neural Geometry', desc: 'How the shape of population activity constrains neural computation.' },
+  { label: '02', title: 'Predictive Coding', desc: 'Normative theories of hierarchical inference in cortical circuits.' },
+  { label: '03', title: 'Working Memory', desc: 'Dynamical mechanisms of persistent activity in prefrontal cortex.' },
+  { label: '04', title: 'Generative Models', desc: 'Deep latent variable models for neural population dynamics.' },
 ];
 ---
 
 <BaseLayout>
-  <!-- Hero -->
-  <section class="relative overflow-hidden bg-ink text-white" aria-label="Lab introduction">
-    <div class="absolute inset-0 opacity-5" aria-hidden="true"
-      style="background-image: radial-gradient(circle at 20% 80%, #2563EB 0%, transparent 50%), radial-gradient(circle at 80% 20%, #E53E3E 0%, transparent 50%);">
-    </div>
-    <div class="absolute left-0 top-0 bottom-0 w-1 bg-margin" aria-hidden="true"></div>
-    <div class="container-lab py-20 md:py-28 relative">
-      <div class="max-w-2xl">
-        <p class="font-sans text-xs font-bold tracking-[0.2em] uppercase text-accent mb-4">
-          {SITE.institution} &middot; {SITE.department}
-        </p>
-        <h1 class="font-sans text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.05] mb-6">
-          Neural<br />
-          Computation<br />
-          <span class="text-accent">Laboratory</span>
-        </h1>
-        <p class="font-serif text-lg md:text-xl text-gray-300 leading-relaxed mb-8 max-w-xl">
-          We investigate how neural circuits represent, transform, and communicate information &mdash; bridging
-          mathematics, machine learning, and experimental neuroscience.
-        </p>
-        <div class="flex flex-wrap gap-3">
-          <a href="/research" class="btn-primary">Our Research &rarr;</a>
-          <a href="/publications" class="inline-flex items-center gap-2 px-4 py-2 border border-white/20 text-white text-sm font-medium rounded-md hover:bg-white/10 transition-colors">
-            Publications
-          </a>
-          <a href="/contact" class="inline-flex items-center gap-2 px-4 py-2 border border-red-400/60 text-red-400 text-sm font-medium rounded-md hover:bg-red-400/10 transition-colors">
-            Join the Lab
-          </a>
-        </div>
-      </div>
+
+  <!-- ── Hero ─────────────────────────────────────────── -->
+  <section class="container-lab pt-20 pb-16 md:pt-28 md:pb-20" aria-label="Lab introduction">
+    <p class="eyebrow mb-6">{SITE.institution} &nbsp;·&nbsp; {SITE.department}</p>
+    <h1 class="font-sans font-semibold tracking-tight leading-none text-ink mb-8"
+        style="font-size: clamp(2.5rem, 6vw, 4.5rem);">
+      Neural<br />Computation<br />
+      <span class="text-accent">Laboratory</span>
+    </h1>
+    <p class="font-serif text-lg text-ink-muted leading-relaxed max-w-xl mb-10">
+      We investigate how neural circuits represent, transform, and communicate
+      information — bridging mathematics, machine learning, and experimental
+      neuroscience.
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <a href="/research" class="btn-primary">Research &rarr;</a>
+      <a href="/publications" class="btn-ghost">Publications</a>
+      <a href="/contact" class="btn-accent">Join the Lab</a>
     </div>
   </section>
 
-  <!-- Research Themes -->
+  <hr class="container-lab" style="margin-left: auto; margin-right: auto; max-width: 72rem; padding: 0 4rem;" />
+  <div style="border-top: 1px solid var(--color-rule); margin: 0 0;"></div>
+
+  <!-- ── Stats ─────────────────────────────────────────── -->
+  <section class="container-lab py-10" aria-label="Lab statistics">
+    <dl class="grid grid-cols-2 md:grid-cols-4 gap-px bg-rule" style="background-color: var(--color-rule);">
+      {[
+        { value: '5',   label: 'Team members' },
+        { value: '20+', label: 'Publications' },
+        { value: '2',   label: 'Active grants' },
+        { value: String(new Date().getFullYear() - SITE.founded), label: 'Years active' },
+      ].map(stat => (
+        <div class="bg-paper px-6 py-5">
+          <dt class="font-sans text-2xl font-semibold text-ink tracking-tight"
+              style="font-variant-numeric: tabular-nums;">{stat.value}</dt>
+          <dd class="mt-0.5 text-xs text-ink-faint font-sans uppercase tracking-widest"
+              style="letter-spacing: 0.08em;">{stat.label}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <div style="border-top: 1px solid var(--color-rule);"></div>
+
+  <!-- ── Research Themes ───────────────────────────────── -->
   <section class="container-lab py-16" aria-labelledby="themes-heading">
-    <div class="mb-10">
+    <header class="mb-10">
+      <p class="eyebrow mb-2">Focus areas</p>
       <h2 id="themes-heading" class="section-heading">Research Themes</h2>
       <p class="section-lead">Four interconnected questions about computation in biological and artificial neural networks.</p>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    </header>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-px" style="background-color: var(--color-rule);">
       {researchTopics.map((topic) => (
-        <div class="card p-5 margin-rule hover:border-accent/30 transition-colors">
-          <div class="text-2xl text-accent mb-3 font-mono" aria-hidden="true">{topic.icon}</div>
-          <h3 class="font-sans font-semibold text-ink dark:text-white mb-2">{topic.title}</h3>
-          <p class="text-sm text-ink-muted dark:text-gray-400 font-serif leading-relaxed">{topic.desc}</p>
+        <div class="bg-paper p-6 group">
+          <span class="font-mono text-xs text-ink-faint mb-4 block">{topic.label}</span>
+          <h3 class="font-sans font-semibold text-ink text-base mb-2 group-hover:text-accent transition-colors duration-150">
+            {topic.title}
+          </h3>
+          <p class="text-sm text-ink-muted font-serif leading-relaxed">{topic.desc}</p>
         </div>
       ))}
     </div>
-    <div class="mt-6 text-right">
-      <a href="/research" class="link text-sm">All research topics &rarr;</a>
+    <div class="mt-5 text-right">
+      <a href="/research" class="link text-sm">All research &rarr;</a>
     </div>
   </section>
 
-  <!-- Stats row -->
-  <section class="bg-ink text-white py-12" aria-label="Lab statistics">
-    <div class="container-lab">
-      <dl class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-        {[
-          { value: '5', label: 'Team members' },
-          { value: '20+', label: 'Publications' },
-          { value: '2', label: 'Active grants' },
-          { value: String(new Date().getFullYear() - SITE.founded), label: 'Years active' },
-        ].map(stat => (
-          <div>
-            <dt class="font-sans text-4xl font-semibold text-accent">{stat.value}</dt>
-            <dd class="mt-1 text-sm text-gray-400">{stat.label}</dd>
-          </div>
-        ))}
-      </dl>
-    </div>
-  </section>
+  <div style="border-top: 1px solid var(--color-rule);"></div>
 
-  <!-- Featured Publications -->
+  <!-- ── Selected Publications ─────────────────────────── -->
   <section class="container-lab py-16" aria-labelledby="pubs-heading">
-    <div class="mb-10">
+    <header class="mb-8">
+      <p class="eyebrow mb-2">Recent work</p>
       <h2 id="pubs-heading" class="section-heading">Selected Publications</h2>
-      <p class="section-lead">Recent highlights from the lab.</p>
-    </div>
-    <div class="space-y-4">
+    </header>
+    <div class="divide-y" style="border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule);">
       {featuredPubs.map(pub => (
         <PublicationCard pub={pub} view="list" />
       ))}
     </div>
-    <div class="mt-8 text-right">
+    <div class="mt-6 text-right">
       <a href="/publications" class="link text-sm">All publications &rarr;</a>
     </div>
   </section>
 
-  <!-- Team preview -->
-  <section class="bg-gray-50 dark:bg-gray-950 py-16" aria-labelledby="team-heading">
-    <div class="container-lab">
-      <div class="mb-10">
-        <h2 id="team-heading" class="section-heading">The Team</h2>
-        <p class="section-lead">Researchers from diverse backgrounds united by curiosity about the brain.</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {sortedTeam.slice(0, 4).map(member => (
-          <TeamCard member={member} compact />
-        ))}
-      </div>
-      <div class="mt-6 text-right">
-        <a href="/team" class="link text-sm">Full team &rarr;</a>
-      </div>
+  <div style="border-top: 1px solid var(--color-rule);"></div>
+
+  <!-- ── Team ──────────────────────────────────────────── -->
+  <section class="container-lab py-16" aria-labelledby="team-heading">
+    <header class="mb-8">
+      <p class="eyebrow mb-2">People</p>
+      <h2 id="team-heading" class="section-heading">The Team</h2>
+      <p class="section-lead">Researchers from diverse backgrounds united by curiosity about the brain.</p>
+    </header>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px" style="background-color: var(--color-rule);">
+      {sortedTeam.slice(0, 4).map(member => (
+        <TeamCard member={member} compact />
+      ))}
+    </div>
+    <div class="mt-6 text-right">
+      <a href="/team" class="link text-sm">Full team &rarr;</a>
     </div>
   </section>
 
-  <!-- News -->
+  <div style="border-top: 1px solid var(--color-rule);"></div>
+
+  <!-- ── News ──────────────────────────────────────────── -->
   <section class="container-lab py-16" aria-labelledby="news-heading">
-    <div class="mb-10">
+    <header class="mb-8">
+      <p class="eyebrow mb-2">Updates</p>
       <h2 id="news-heading" class="section-heading">Latest News</h2>
-    </div>
-    <div class="space-y-4">
+    </header>
+    <div style="border-top: 1px solid var(--color-rule);">
       {recentNews.map(item => (
-        <article class="flex gap-4 py-4 border-b border-gray-100 dark:border-gray-800 last:border-0">
-          <div class="flex-shrink-0 pt-0.5">
-            <span class:list={[
-              'inline-flex items-center px-2 py-0.5 rounded text-xs font-medium',
-              item.data.category === 'Publication' ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400' :
-              item.data.category === 'Grant' ? 'bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400' :
-              item.data.category === 'Hiring' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400' :
-              'bg-gray-50 text-gray-700 dark:bg-gray-800 dark:text-gray-400'
-            ]}>{item.data.category}</span>
-          </div>
+        <article class="py-5 flex gap-6" style="border-bottom: 1px solid var(--color-rule);">
+          <time class="flex-shrink-0 font-mono text-xs text-ink-faint pt-0.5 w-24 leading-relaxed"
+                datetime={item.data.date.toISOString()}>
+            {item.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+          </time>
           <div>
-            <h3 class="font-sans font-semibold text-ink dark:text-white text-sm mb-1">
-              <a href={`/news/${item.id}`} class="hover:text-accent transition-colors">{item.data.title}</a>
+            <span class="eyebrow mb-1 block">{item.data.category}</span>
+            <h3 class="font-sans font-semibold text-ink text-sm leading-snug mb-1">
+              <a href={`/news/${item.id}`} class="hover:text-accent transition-colors duration-150">
+                {item.data.title}
+              </a>
             </h3>
-            <p class="text-sm text-ink-muted dark:text-gray-400 font-serif">{item.data.summary}</p>
-            <time class="text-xs text-ink-faint mt-1 block" datetime={item.data.date.toISOString()}>
-              {item.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-            </time>
+            <p class="text-sm text-ink-muted font-serif leading-relaxed">{item.data.summary}</p>
           </div>
         </article>
       ))}
@@ -166,4 +163,5 @@ const researchTopics = [
       <a href="/news" class="link text-sm">All news &rarr;</a>
     </div>
   </section>
+
 </BaseLayout>
