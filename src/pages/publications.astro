@@ -7,20 +7,18 @@ const allPubs = await getCollection('publications');
 const sorted = sortByYear(allPubs);
 const grouped = groupByYear(sorted);
 const years = Object.keys(grouped).map(Number).sort((a, b) => b - a);
-
 const allTypes = [...new Set(allPubs.map(p => p.data.type))].sort();
 ---
 
 <BaseLayout title="Publications" description="Full list of publications from the DeLi Lab.">
   <div class="container-lab py-12">
 
-    <!-- Page header -->
+    <!-- Header + toolbar -->
     <div class="mb-10 border-b border-rule pb-8">
       <h1 class="section-heading">Publications</h1>
       <p class="section-lead">Our research outputs, with open access where possible.</p>
 
-      <!-- Toolbar -->
-      <div class="flex flex-col sm:flex-row gap-3 mt-6" id="pub-toolbar">
+      <div class="flex flex-col sm:flex-row gap-3 mt-6">
         <!-- Search -->
         <div class="relative flex-1 max-w-sm">
           <label for="pub-search" class="sr-only">Search publications</label>
@@ -36,138 +34,150 @@ const allTypes = [...new Set(allPubs.map(p => p.data.type))].sort();
           />
         </div>
 
-        <!-- Type filter -->
+        <!-- Type filters -->
         <div class="flex items-center gap-1.5 flex-wrap">
-          <button class="pub-filter-btn text-xs font-medium px-2.5 py-1 border border-ink bg-ink text-paper" data-filter="type" data-value="all">All</button>
+          <button class="pub-filter-btn text-xs font-medium px-2.5 py-1 border border-ink bg-ink text-paper" data-value="all">All</button>
           {allTypes.map(t => (
-            <button class="pub-filter-btn text-xs font-medium px-2.5 py-1 border border-rule text-ink-muted hover:border-ink hover:text-ink transition-colors" data-filter="type" data-value={t}>
+            <button class="pub-filter-btn text-xs font-medium px-2.5 py-1 border border-rule text-ink-muted hover:border-ink hover:text-ink transition-colors" data-value={t}>
               {t.charAt(0).toUpperCase() + t.slice(1)}
             </button>
           ))}
         </div>
       </div>
 
-      <!-- Count -->
-      <p class="mt-3 text-xs text-ink-faint" id="pub-count" aria-live="polite">
+      <p class="mt-3 text-xs text-ink-faint" aria-live="polite">
         <span id="pub-count-num">{allPubs.length}</span> publications
       </p>
     </div>
 
-    <!-- Timeline -->
-    <div id="pub-list-view" class="relative">
-      <!-- Vertical rule -->
-      <div class="hidden sm:block absolute left-20 top-0 bottom-0 w-px bg-rule" aria-hidden="true"></div>
+    <!-- Body: timeline + year scrubber -->
+    <div class="relative flex gap-8">
 
-      {years.map(year => (
-        <section class="pub-year-group relative mb-12 sm:flex sm:gap-12" data-year={year} aria-labelledby={`year-${year}`}>
-          <!-- Year label -->
-          <div class="hidden sm:flex w-20 shrink-0 justify-end pt-0.5">
-            <h2 id={`year-${year}`} class="relative z-10 text-sm font-semibold text-ink tabular-nums">
-              {year}
-            </h2>
-          </div>
-          <!-- Mobile year -->
-          <h2 id={`year-${year}-mobile`} class="sm:hidden text-sm font-semibold text-ink mb-4">{year}</h2>
+      <!-- Timeline column -->
+      <div id="pub-list-view" class="relative flex-1 min-w-0">
 
-          <!-- Entries -->
-          <div class="flex-1 space-y-8 sm:pl-0">
-            {grouped[year].map(pub => {
-              const { title, authors, venue, venueShort, type, doi, arxiv, pdf, abstract, keywords, featured, award } = pub.data;
-              const doiUrl  = doi   ? `https://doi.org/${doi}`       : null;
-              const arxivUrl = arxiv ? `https://arxiv.org/abs/${arxiv}` : null;
-              const href    = doiUrl ?? arxivUrl ?? `/publications/${pub.id}`;
-              const abstractId = `abstract-${pub.id}`;
-              return (
-                <article
-                  class="pub-card group"
-                  data-type={type}
-                  data-title={title.toLowerCase()}
-                  data-authors={authors.join(' ').toLowerCase()}
-                  data-categories={(pub.data.categories ?? []).join(',')}
-                >
-                  <!-- Type + award badges -->
-                  <div class="flex items-center gap-2 mb-1">
-                    <span class="eyebrow">{type}</span>
-                    {award && <span class="eyebrow text-amber-600">★ {award}</span>}
-                    {featured && <span class="eyebrow text-accent">Featured</span>}
-                  </div>
+        <!-- Vertical rule -->
+        <div class="hidden sm:block absolute left-20 top-0 bottom-0 w-px bg-rule" aria-hidden="true"></div>
 
-                  <!-- Title -->
-                  <h3 class="font-sans text-[0.9375rem] font-semibold leading-snug text-ink group-hover:text-accent transition-colors duration-150">
-                    <a href={href} target={doiUrl || arxivUrl ? '_blank' : '_self'} rel={doiUrl || arxivUrl ? 'noopener' : undefined}>
-                      {title}
-                    </a>
-                  </h3>
+        {years.map(year => (
+          <section
+            id={`year-${year}`}
+            class="pub-year-group relative mb-14 sm:flex sm:gap-12"
+            data-year={year}
+            aria-labelledby={`year-label-${year}`}
+          >
+            <!-- Year label + dot -->
+            <div class="hidden sm:flex w-20 shrink-0 justify-end items-start pt-0.5 relative">
+              <!-- Dot on the line -->
+              <span class="year-dot absolute right-[-4.5px] top-[5px] w-2.5 h-2.5 rounded-full border-2 bg-paper transition-colors duration-300"
+                    style="border-color: var(--color-rule);"
+                    aria-hidden="true">
+              </span>
+              <h2 id={`year-label-${year}`} class="year-label text-sm font-semibold text-ink-faint tabular-nums transition-colors duration-300 pr-4">
+                {year}
+              </h2>
+            </div>
 
-                  <!-- Authors -->
-                  <p class="mt-0.5 text-sm text-ink-muted">
-                    {authors.join(', ')}
-                  </p>
+            <!-- Mobile year -->
+            <h2 class="sm:hidden text-sm font-semibold text-ink mb-4">{year}</h2>
 
-                  <!-- Venue -->
-                  <p class="mt-0.5 text-sm">
-                    <span class="italic text-ink-muted">{venueShort ?? venue}</span>
-                    <span class="text-ink-faint mx-1">·</span>
-                    <span class="text-ink-faint">{year}</span>
-                  </p>
-
-                  <!-- Keywords -->
-                  {keywords && keywords.length > 0 && (
-                    <div class="mt-1.5 flex flex-wrap gap-1">
-                      {keywords.map(kw => <span class="tag">{kw}</span>)}
+            <!-- Entries -->
+            <div class="flex-1 space-y-8">
+              {grouped[year].map(pub => {
+                const { title, authors, venue, venueShort, type, doi, arxiv, pdf, abstract, keywords, featured, award } = pub.data;
+                const doiUrl   = doi   ? `https://doi.org/${doi}`        : null;
+                const arxivUrl = arxiv ? `https://arxiv.org/abs/${arxiv}` : null;
+                const href     = doiUrl ?? arxivUrl ?? `/publications/${pub.id}`;
+                const absId    = `abstract-${pub.id}`;
+                return (
+                  <article
+                    class="pub-card group"
+                    data-type={type}
+                    data-title={title.toLowerCase()}
+                    data-authors={authors.join(' ').toLowerCase()}
+                  >
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="eyebrow">{type}</span>
+                      {award   && <span class="eyebrow" style="color:#b45309">★ {award}</span>}
+                      {featured && <span class="eyebrow text-accent">Featured</span>}
                     </div>
-                  )}
 
-                  <!-- Actions -->
-                  <div class="mt-2 flex flex-wrap items-center gap-3">
-                    {doiUrl && (
-                      <a href={doiUrl} target="_blank" rel="noopener" class="text-xs text-ink-faint hover:text-accent transition-colors">DOI ↗</a>
-                    )}
-                    {arxivUrl && (
-                      <a href={arxivUrl} target="_blank" rel="noopener" class="text-xs text-ink-faint hover:text-accent transition-colors">arXiv ↗</a>
-                    )}
-                    {pdf && (
-                      <a href={pdf} target="_blank" rel="noopener" class="text-xs text-ink-faint hover:text-accent transition-colors">PDF ↗</a>
-                    )}
-                    {abstract && (
-                      <button
-                        class="text-xs text-ink-faint hover:text-accent transition-colors abstract-toggle"
-                        data-target={abstractId}
-                        aria-expanded="false"
-                      >
-                        Abstract ↓
-                      </button>
-                    )}
-                  </div>
+                    <h3 class="font-sans text-[0.9375rem] font-semibold leading-snug text-ink group-hover:text-accent transition-colors duration-150">
+                      <a href={href} target={doiUrl || arxivUrl ? '_blank' : '_self'} rel={doiUrl || arxivUrl ? 'noopener' : undefined}>
+                        {title}
+                      </a>
+                    </h3>
 
-                  <!-- Abstract (hidden by default) -->
-                  {abstract && (
-                    <p id={abstractId} class="pub-abstract hidden mt-3 text-sm text-ink-muted font-serif leading-relaxed border-l-2 border-rule pl-3">
-                      {abstract}
+                    <p class="mt-0.5 text-sm text-ink-muted">{authors.join(', ')}</p>
+
+                    <p class="mt-0.5 text-sm">
+                      <span class="italic text-ink-muted">{venueShort ?? venue}</span>
+                      <span class="text-ink-faint mx-1">·</span>
+                      <span class="text-ink-faint">{year}</span>
                     </p>
-                  )}
-                </article>
-              );
-            })}
-          </div>
-        </section>
-      ))}
-    </div>
 
-    <!-- Empty state -->
-    <div id="pub-empty" class="hidden text-center py-20 text-ink-faint">
-      <p class="text-sm">No publications match your search.</p>
-      <button id="clear-filters" class="mt-2 link text-xs">Clear filters</button>
+                    {keywords && keywords.length > 0 && (
+                      <div class="mt-1.5 flex flex-wrap gap-1">
+                        {keywords.map(kw => <span class="tag">{kw}</span>)}
+                      </div>
+                    )}
+
+                    <div class="mt-2 flex flex-wrap items-center gap-3">
+                      {doiUrl   && <a href={doiUrl}   target="_blank" rel="noopener" class="text-xs text-ink-faint hover:text-accent transition-colors">DOI ↗</a>}
+                      {arxivUrl && <a href={arxivUrl} target="_blank" rel="noopener" class="text-xs text-ink-faint hover:text-accent transition-colors">arXiv ↗</a>}
+                      {pdf      && <a href={pdf}      target="_blank" rel="noopener" class="text-xs text-ink-faint hover:text-accent transition-colors">PDF ↗</a>}
+                      {abstract && (
+                        <button class="abstract-toggle text-xs text-ink-faint hover:text-accent transition-colors" data-target={absId} aria-expanded="false">
+                          Abstract ↓
+                        </button>
+                      )}
+                    </div>
+
+                    {abstract && (
+                      <p id={absId} class="pub-abstract hidden mt-3 text-sm text-ink-muted font-serif leading-relaxed pl-3" style="border-left: 2px solid var(--color-rule);">
+                        {abstract}
+                      </p>
+                    )}
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        ))}
+
+        <!-- Empty state -->
+        <div id="pub-empty" class="hidden text-center py-20 text-ink-faint">
+          <p class="text-sm">No publications match your search.</p>
+          <button id="clear-filters" class="mt-2 link text-xs">Clear filters</button>
+        </div>
+      </div>
+
+      <!-- Year scrubber (sticky sidebar, desktop only) -->
+      <aside class="hidden lg:block w-12 shrink-0" aria-label="Jump to year">
+        <div id="year-scrubber" class="sticky top-24 flex flex-col items-center gap-1">
+          {years.map(year => (
+            <a
+              href={`#year-${year}`}
+              class="year-nav-btn block text-[10px] tabular-nums font-medium text-ink-faint hover:text-accent transition-colors duration-150 leading-tight py-0.5"
+              data-year={year}
+              aria-label={`Jump to ${year}`}
+            >
+              {year}
+            </a>
+          ))}
+        </div>
+      </aside>
     </div>
 
   </div>
 </BaseLayout>
 
 <script>
+  // ── Filters & search ─────────────────────────────────────────────────────────
   const searchInput = document.getElementById('pub-search') as HTMLInputElement;
   const filterBtns  = document.querySelectorAll<HTMLButtonElement>('.pub-filter-btn');
-  const emptyState  = document.getElementById('pub-empty')!;
   const countSpan   = document.getElementById('pub-count-num')!;
+  const emptyEl     = document.getElementById('pub-empty')!;
   const clearBtn    = document.getElementById('clear-filters')!;
 
   let currentType   = 'all';
@@ -176,24 +186,22 @@ const allTypes = [...new Set(allPubs.map(p => p.data.type))].sort();
   function applyFilters() {
     const cards = document.querySelectorAll<HTMLElement>('.pub-card');
     let visible = 0;
-
     cards.forEach(card => {
-      const typeMatch   = currentType === 'all' || card.dataset.type === currentType;
-      const q           = currentSearch.toLowerCase();
-      const searchMatch = !q || (card.dataset.title ?? '').includes(q) || (card.dataset.authors ?? '').includes(q);
-      const show        = typeMatch && searchMatch;
+      const typeOk   = currentType === 'all' || card.dataset.type === currentType;
+      const q        = currentSearch.toLowerCase();
+      const searchOk = !q || (card.dataset.title ?? '').includes(q) || (card.dataset.authors ?? '').includes(q);
+      const show     = typeOk && searchOk;
       card.style.display = show ? '' : 'none';
       if (show) visible++;
     });
 
-    // Hide empty year sections
     document.querySelectorAll<HTMLElement>('.pub-year-group').forEach(group => {
-      const hasVisible = Array.from(group.querySelectorAll<HTMLElement>('.pub-card')).some(c => c.style.display !== 'none');
-      group.style.display = hasVisible ? '' : 'none';
+      const any = Array.from(group.querySelectorAll<HTMLElement>('.pub-card')).some(c => c.style.display !== 'none');
+      group.style.display = any ? '' : 'none';
     });
 
     countSpan.textContent = String(visible);
-    emptyState.classList.toggle('hidden', visible > 0);
+    emptyEl.classList.toggle('hidden', visible > 0);
   }
 
   searchInput.addEventListener('input', e => {
@@ -205,41 +213,94 @@ const allTypes = [...new Set(allPubs.map(p => p.data.type))].sort();
     btn.addEventListener('click', () => {
       currentType = btn.dataset.value!;
       filterBtns.forEach(b => {
-        const active = b.dataset.value === currentType;
-        b.classList.toggle('bg-ink',    active);
-        b.classList.toggle('text-paper', active);
-        b.classList.toggle('border-ink', active);
-        b.classList.toggle('text-ink-muted', !active);
-        b.classList.toggle('border-rule',    !active);
+        const on = b.dataset.value === currentType;
+        b.classList.toggle('bg-ink', on);
+        b.classList.toggle('text-paper', on);
+        b.classList.toggle('border-ink', on);
+        b.classList.toggle('text-ink-muted', !on);
+        b.classList.toggle('border-rule', !on);
       });
       applyFilters();
     });
   });
 
-  clearBtn.addEventListener('click', () => {
+  clearBtn?.addEventListener('click', () => {
     searchInput.value = '';
     currentSearch = '';
     currentType = 'all';
     filterBtns.forEach(b => {
-      const active = b.dataset.value === 'all';
-      b.classList.toggle('bg-ink', active);
-      b.classList.toggle('text-paper', active);
-      b.classList.toggle('border-ink', active);
-      b.classList.toggle('text-ink-muted', !active);
-      b.classList.toggle('border-rule', !active);
+      const on = b.dataset.value === 'all';
+      b.classList.toggle('bg-ink', on);
+      b.classList.toggle('text-paper', on);
+      b.classList.toggle('border-ink', on);
+      b.classList.toggle('text-ink-muted', !on);
+      b.classList.toggle('border-rule', !on);
     });
     applyFilters();
   });
 
-  // Abstract toggles
+  // ── Abstract toggles ─────────────────────────────────────────────────────────
   document.querySelectorAll<HTMLButtonElement>('.abstract-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
-      const target = document.getElementById(btn.dataset.target!);
-      if (!target) return;
-      const open = !target.classList.contains('hidden');
-      target.classList.toggle('hidden', open);
+      const el   = document.getElementById(btn.dataset.target!);
+      if (!el) return;
+      const open = !el.classList.contains('hidden');
+      el.classList.toggle('hidden', open);
       btn.textContent = open ? 'Abstract ↓' : 'Abstract ↑';
       btn.setAttribute('aria-expanded', String(!open));
+    });
+  });
+
+  // ── Year scrubber: highlight active year via IntersectionObserver ─────────────
+  const navBtns    = document.querySelectorAll<HTMLAnchorElement>('#year-scrubber .year-nav-btn');
+  const yearLabels = document.querySelectorAll<HTMLElement>('.year-label');
+  const yearDots   = document.querySelectorAll<HTMLElement>('.year-dot');
+
+  function setActiveYear(year: string) {
+    navBtns.forEach(btn => {
+      const active = btn.dataset.year === year;
+      btn.style.color = active ? 'var(--color-accent)' : '';
+      btn.style.fontWeight = active ? '700' : '';
+    });
+    yearLabels.forEach(label => {
+      const section = label.closest('.pub-year-group') as HTMLElement;
+      const active  = section?.dataset.year === year;
+      label.style.color = active ? 'var(--color-ink)' : '';
+    });
+    yearDots.forEach(dot => {
+      const section = dot.closest('.pub-year-group') as HTMLElement;
+      const active  = section?.dataset.year === year;
+      dot.style.borderColor = active ? 'var(--color-accent)' : '';
+      dot.style.backgroundColor = active ? 'var(--color-accent)' : '';
+      dot.style.transform = active ? 'scale(1.3)' : '';
+    });
+  }
+
+  const observer = new IntersectionObserver(
+    entries => {
+      // Pick the entry closest to the top of the viewport
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      if (visible.length > 0) {
+        const year = (visible[0].target as HTMLElement).dataset.year!;
+        setActiveYear(year);
+      }
+    },
+    { rootMargin: '-10% 0px -70% 0px', threshold: 0 }
+  );
+
+  document.querySelectorAll<HTMLElement>('.pub-year-group').forEach(s => observer.observe(s));
+
+  // ── Smooth scroll with URL hash update ───────────────────────────────────────
+  navBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.getElementById(`year-${btn.dataset.year}`);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', `#year-${btn.dataset.year}`);
+      }
     });
   });
 </script>
