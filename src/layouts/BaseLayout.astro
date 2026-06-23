@@ -1,4 +1,4 @@
----
+﻿---
 import { SITE } from '../lib/config';
 import Navigation from '../components/layout/Navigation.astro';
 import Footer from '../components/layout/Footer.astro';
@@ -21,7 +21,7 @@ const {
   class: className,
 } = Astro.props;
 
-const pageTitle = title ? `${title} — ${SITE.shortName}` : `${SITE.name}`;
+const pageTitle = title ? `${title} â€” ${SITE.shortName}` : `${SITE.name}`;
 const canonicalURL = new URL(Astro.url.pathname, SITE.url);
 ---
 
@@ -74,7 +74,7 @@ const canonicalURL = new URL(Astro.url.pathname, SITE.url);
     <title>{pageTitle}</title>
   </head>
 
-  <body class="flex flex-col min-h-screen bg-paper dark:bg-ink text-ink dark:text-gray-100">
+  <body class="flex flex-col min-h-screen bg-paper text-ink">
     <!-- Skip navigation -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
@@ -88,13 +88,5 @@ const canonicalURL = new URL(Astro.url.pathname, SITE.url);
 
     <BackToTop />
 
-    <!-- Dark mode script (no flash) -->
-    <script is:inline>
-      const stored = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (stored === 'dark' || (!stored && prefersDark)) {
-        document.documentElement.classList.add('dark');
-      }
-    </script>
   </body>
 </html>

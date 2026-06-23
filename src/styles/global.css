@@ -24,7 +24,6 @@
   --font-family-mono:   'JetBrains Mono', Menlo, monospace;
 }
 
-@variant dark (&:where(.dark, .dark *));
 
 /* ── Base ──────────────────────────────────────────────── */
 @layer base {

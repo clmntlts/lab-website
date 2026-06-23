@@ -1,4 +1,4 @@
----
+﻿---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const courses = [
@@ -36,15 +36,15 @@ const courses = [
 
 const supervision = {
   phd: 'We currently supervise PhD students through the University Doctoral School in Neuroscience and the Doctoral School in Computer Science. Prospective students should email Prof. Vasquez directly with a CV and a brief statement of research interests.',
-  postdoc: 'Postdoctoral applicants are welcome to reach out at any time. Funded positions are advertised on the News page; self-funded applications via Marie Skłodowska-Curie or other fellowships are always welcome.',
-  master: 'We offer M2 internship projects in computational neuroscience and machine learning. Projects typically last 5–6 months. Contact us in October–November for the following spring.',
+  postdoc: 'Postdoctoral applicants are welcome to reach out at any time. Funded positions are advertised on the News page; self-funded applications via Marie SkÅ‚odowska-Curie or other fellowships are always welcome.',
+  master: 'We offer M2 internship projects in computational neuroscience and machine learning. Projects typically last 5â€“6 months. Contact us in Octoberâ€“November for the following spring.',
   undergrad: 'Exceptional undergraduates interested in a research immersion are encouraged to apply for summer internships through the lab\'s institutional programs.',
 };
 ---
 
 <BaseLayout title="Teaching" description="Courses and supervision opportunities at the Neural Computation Laboratory.">
   <div class="container-lab py-12">
-    <div class="mb-10 border-b border-gray-200 dark:border-gray-800 pb-8">
+    <div class="mb-10 border-b border-gray-200 pb-8">
       <h1 class="section-heading">Teaching</h1>
       <p class="section-lead max-w-2xl">Courses taught by lab members and information for prospective students.</p>
     </div>
@@ -53,7 +53,7 @@ const supervision = {
     <section aria-labelledby="courses-heading" class="mb-14">
       <h2 id="courses-heading" class="font-sans text-sm font-bold uppercase tracking-widest text-ink-faint mb-6 flex items-center gap-3">
         Courses
-        <span class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></span>
+        <span class="flex-1 h-px bg-gray-100"></span>
       </h2>
       <div class="space-y-5">
         {courses.map(course => (
@@ -62,16 +62,16 @@ const supervision = {
               <div>
                 <div class="flex items-center gap-3 mb-1">
                   <span class="font-mono text-xs font-bold text-accent tracking-wider">{course.code}</span>
-                  <span class="text-xs text-ink-faint">{course.semester} · {course.ects} ECTS</span>
+                  <span class="text-xs text-ink-faint">{course.semester} Â· {course.ects} ECTS</span>
                 </div>
-                <h3 class="font-sans text-lg font-semibold text-ink dark:text-white">{course.title}</h3>
+                <h3 class="font-sans text-lg font-semibold text-ink">{course.title}</h3>
               </div>
               <span class:list={[
                 'flex-shrink-0 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium',
-                course.level === 'Graduate' ? 'bg-accent-muted text-accent-dark' : 'bg-gray-50 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+                course.level === 'Graduate' ? 'bg-accent-muted text-accent-dark' : 'bg-gray-50 text-gray-600'
               ]}>{course.level}</span>
             </div>
-            <p class="font-serif text-sm text-ink-muted dark:text-gray-400 leading-relaxed mb-4">{course.description}</p>
+            <p class="font-serif text-sm text-ink-muted leading-relaxed mb-4">{course.description}</p>
             <div class="flex gap-3">
               {course.syllabus && (
                 <a href={course.syllabus} class="btn-ghost text-xs py-1">
@@ -99,15 +99,15 @@ const supervision = {
     <section aria-labelledby="supervision-heading">
       <h2 id="supervision-heading" class="font-sans text-sm font-bold uppercase tracking-widest text-ink-faint mb-6 flex items-center gap-3">
         Supervision & Opportunities
-        <span class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></span>
+        <span class="flex-1 h-px bg-gray-100"></span>
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         {Object.entries(supervision).map(([level, text]) => {
           const labels: Record<string, string> = { phd: 'PhD Students', postdoc: 'Postdoctoral Researchers', master: 'M2 / Master Interns', undergrad: 'Undergraduates' };
           return (
             <div class="card p-5 margin-rule">
-              <h3 class="font-sans font-semibold text-ink dark:text-white mb-2">{labels[level]}</h3>
-              <p class="font-serif text-sm text-ink-muted dark:text-gray-400 leading-relaxed">{text}</p>
+              <h3 class="font-sans font-semibold text-ink mb-2">{labels[level]}</h3>
+              <p class="font-serif text-sm text-ink-muted leading-relaxed">{text}</p>
             </div>
           );
         })}

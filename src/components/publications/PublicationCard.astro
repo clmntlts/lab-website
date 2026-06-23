@@ -1,4 +1,4 @@
----
+﻿---
 import type { CollectionEntry } from 'astro:content';
 import { getBibTeX, getCitation } from '../../lib/utils';
 
@@ -40,7 +40,7 @@ const arxivUrl = arxiv ? `https://arxiv.org/abs/${arxiv}` : null;
       </h3>
       <div class="flex flex-shrink-0 items-center gap-2 mt-0.5">
         <span class="eyebrow">{type}</span>
-        {award && <span class="eyebrow text-amber-600">★ {award}</span>}
+        {award && <span class="eyebrow text-amber-600">â˜… {award}</span>}
       </div>
     </div>
 
@@ -52,14 +52,14 @@ const arxivUrl = arxiv ? `https://arxiv.org/abs/${arxiv}` : null;
           return (
             <>
               {i > 0 && ', '}
-              {isHighlighted ? <strong class="text-ink dark:text-white">{a}</strong> : a}
+              {isHighlighted ? <strong class="text-ink">{a}</strong> : a}
             </>
           );
         })}
       </p>
       <p class="font-medium">
         <span class="italic">{venueShort ?? venue}</span>
-        <span class="mx-1">·</span>
+        <span class="mx-1">Â·</span>
         <span>{year}</span>
       </p>
     </div>
@@ -73,7 +73,7 @@ const arxivUrl = arxiv ? `https://arxiv.org/abs/${arxiv}` : null;
           </svg>
           Abstract
         </summary>
-        <p class="mt-2 text-sm text-ink-muted dark:text-gray-400 leading-relaxed font-serif">{abstract}</p>
+        <p class="mt-2 text-sm text-ink-muted leading-relaxed font-serif">{abstract}</p>
       </details>
     )}
 

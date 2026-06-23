@@ -1,10 +1,10 @@
----
+﻿---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Search" description="Search the Neural Computation Laboratory website.">
   <div class="container-lab py-12">
-    <div class="mb-10 border-b border-gray-200 dark:border-gray-800 pb-8">
+    <div class="mb-10 border-b border-gray-200 pb-8">
       <h1 class="section-heading">Search</h1>
       <p class="section-lead">Search across all pages, publications, team members, and news.</p>
     </div>
@@ -38,15 +38,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <style is:global>
   @reference "../styles/global.css";
   .pagefind-ui__search-input {
-    @apply w-full px-4 py-2.5 text-sm bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-accent font-sans;
+    @apply w-full px-4 py-2.5 text-sm bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-accent font-sans;
   }
   .pagefind-ui__result {
-    @apply py-4 border-b border-gray-100 dark:border-gray-800;
+    @apply py-4 border-b border-gray-100
   }
   .pagefind-ui__result-title {
-    @apply font-sans font-semibold text-ink dark:text-white hover:text-accent;
+    @apply font-sans font-semibold text-ink hover:text-accent;
   }
   .pagefind-ui__result-excerpt {
-    @apply font-serif text-sm text-ink-muted dark:text-gray-400 mt-1;
+    @apply font-serif text-sm text-ink-muted mt-1;
   }
 </style>

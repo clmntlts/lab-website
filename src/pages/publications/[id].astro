@@ -77,11 +77,11 @@ const schemaData = {
             )}
           </div>
 
-          <h1 class="font-sans text-2xl md:text-3xl font-semibold text-ink dark:text-white leading-snug mb-4">
+          <h1 class="font-sans text-2xl md:text-3xl font-semibold text-ink leading-snug mb-4">
             {title}
           </h1>
 
-          <div class="space-y-1 text-sm text-ink-muted dark:text-gray-400">
+          <div class="space-y-1 text-sm text-ink-muted">
             <p class="font-serif">
               {authors.map((a, i) => (
                 <>{i > 0 && ', '}{a}</>
@@ -99,7 +99,7 @@ const schemaData = {
         {abstract && (
           <section aria-labelledby="abstract-heading">
             <h2 id="abstract-heading" class="font-sans text-xs font-bold uppercase tracking-widest text-ink-faint mb-3">Abstract</h2>
-            <p class="font-serif text-base leading-relaxed text-ink dark:text-gray-200">{abstract}</p>
+            <p class="font-serif text-base leading-relaxed text-ink">{abstract}</p>
           </section>
         )}
 
@@ -129,7 +129,7 @@ const schemaData = {
         {pdf && (
           <section aria-labelledby="pdf-heading">
             <h2 id="pdf-heading" class="font-sans text-xs font-bold uppercase tracking-widest text-ink-faint mb-3">PDF Preview</h2>
-            <div class="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+            <div class="rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
               <iframe
                 src={`${pdf}#toolbar=1&navpanes=0&scrollbar=1`}
                 class="w-full h-[600px]"
@@ -152,9 +152,9 @@ const schemaData = {
             <div>
               <p class="text-xs text-ink-faint mb-1">Plain text</p>
               <div class="relative">
-                <pre class="font-mono text-xs bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md p-4 whitespace-pre-wrap overflow-x-auto">{citation}</pre>
+                <pre class="font-mono text-xs bg-gray-50 border border-gray-200 rounded-md p-4 whitespace-pre-wrap overflow-x-auto">{citation}</pre>
                 <button
-                  class="copy-btn absolute top-2 right-2 px-2 py-1 text-xs font-medium bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded hover:bg-gray-50 transition-colors"
+                  class="copy-btn absolute top-2 right-2 px-2 py-1 text-xs font-medium bg-white border border-gray-200 rounded hover:bg-gray-50 transition-colors"
                   data-text={citation}
                   aria-label="Copy plain text citation"
                 >Copy</button>
@@ -164,9 +164,9 @@ const schemaData = {
             <div>
               <p class="text-xs text-ink-faint mb-1">BibTeX</p>
               <div class="relative">
-                <pre class="font-mono text-xs bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md p-4 whitespace-pre-wrap overflow-x-auto">{bibtex}</pre>
+                <pre class="font-mono text-xs bg-gray-50 border border-gray-200 rounded-md p-4 whitespace-pre-wrap overflow-x-auto">{bibtex}</pre>
                 <button
-                  class="copy-btn absolute top-2 right-2 px-2 py-1 text-xs font-medium bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded hover:bg-gray-50 transition-colors"
+                  class="copy-btn absolute top-2 right-2 px-2 py-1 text-xs font-medium bg-white border border-gray-200 rounded hover:bg-gray-50 transition-colors"
                   data-text={bibtex}
                   aria-label="Copy BibTeX"
                 >Copy</button>
@@ -237,7 +237,7 @@ const schemaData = {
           </div>
 
           <!-- Details -->
-          <div class="pt-4 border-t border-gray-100 dark:border-gray-800 space-y-3 text-sm">
+          <div class="pt-4 border-t border-gray-100 space-y-3 text-sm">
             <div>
               <p class="text-xs text-ink-faint mb-0.5">Year</p>
               <p class="font-medium">{year}</p>

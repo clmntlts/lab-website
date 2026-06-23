@@ -47,7 +47,7 @@ const isPI = position === 'PI';
       <aside class="lg:col-span-1">
         <div class="sticky top-24 space-y-6">
           <!-- Photo -->
-          <div class="aspect-square max-w-xs mx-auto lg:mx-0 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-md">
+          <div class="aspect-square max-w-xs mx-auto lg:mx-0 rounded-xl overflow-hidden bg-gray-100 shadow-md">
             {photo ? (
               <img src={photo} alt={`Portrait of ${name}`} class="w-full h-full object-cover" loading="eager" />
             ) : (
@@ -59,7 +59,7 @@ const isPI = position === 'PI';
 
           <!-- Identity -->
           <div>
-            <h1 class="font-sans text-2xl font-semibold text-ink dark:text-white">{name}</h1>
+            <h1 class="font-sans text-2xl font-semibold text-ink">{name}</h1>
             <p class="text-accent font-medium mt-0.5">{role}</p>
             {joinedYear && (
               <p class="text-xs text-ink-faint mt-1">Member since {joinedYear}</p>
@@ -160,7 +160,7 @@ const isPI = position === 'PI';
         <!-- Biography -->
         <section aria-labelledby="bio-heading">
           <h2 id="bio-heading" class="font-sans text-xs font-bold uppercase tracking-widest text-ink-faint mb-4">Biography</h2>
-          <div class="prose prose-sm max-w-none dark:prose-invert font-serif">
+          <div class="prose prose-sm max-w-none font-serif">
             <Content />
           </div>
         </section>
@@ -178,7 +178,7 @@ const isPI = position === 'PI';
                     </svg>
                   </span>
                   <div>
-                    <p class="font-sans text-sm font-medium text-ink dark:text-white">{a.title}</p>
+                    <p class="font-sans text-sm font-medium text-ink">{a.title}</p>
                     <p class="text-xs text-ink-muted">{a.org} &middot; {a.year}</p>
                   </div>
                 </li>
@@ -196,7 +196,7 @@ const isPI = position === 'PI';
                 <div class="card p-4">
                   <div class="flex items-start justify-between gap-2">
                     <div>
-                      <p class="font-sans text-sm font-semibold text-ink dark:text-white">{g.title}</p>
+                      <p class="font-sans text-sm font-semibold text-ink">{g.title}</p>
                       <p class="text-xs text-ink-muted mt-0.5">{g.funder} &middot; {g.years}</p>
                     </div>
                     {g.amount && (
@@ -215,10 +215,10 @@ const isPI = position === 'PI';
             <h2 id="talks-heading" class="font-sans text-xs font-bold uppercase tracking-widest text-ink-faint mb-4">Selected Invited Talks</h2>
             <ul class="space-y-3" role="list">
               {invitedTalks.map(t => (
-                <li class="flex items-start gap-3 py-2 border-b border-gray-100 dark:border-gray-800 last:border-0">
+                <li class="flex items-start gap-3 py-2 border-b border-gray-100 last:border-0">
                   <span class="flex-shrink-0 font-mono text-xs text-ink-faint w-10 pt-0.5">{t.year}</span>
                   <div>
-                    <p class="font-sans text-sm font-medium text-ink dark:text-white">{t.title}</p>
+                    <p class="font-sans text-sm font-medium text-ink">{t.title}</p>
                     <p class="text-xs text-ink-muted">{t.venue}</p>
                   </div>
                 </li>
@@ -239,7 +239,7 @@ const isPI = position === 'PI';
                     {m.url ? (
                       <a href={m.url} target="_blank" rel="noopener" class="font-sans text-sm font-medium text-accent hover:underline">{m.title}</a>
                     ) : (
-                      <p class="font-sans text-sm font-medium text-ink dark:text-white">{m.title}</p>
+                      <p class="font-sans text-sm font-medium text-ink">{m.title}</p>
                     )}
                     <p class="text-xs text-ink-muted">{m.outlet}</p>
                   </div>

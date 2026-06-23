@@ -38,7 +38,7 @@ const categoryColors: Record<string, string> = {
         <span class:list={['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mb-4', categoryColors[item.data.category] ?? categoryColors.General]}>
           {item.data.category}
         </span>
-        <h1 class="font-sans text-3xl font-semibold text-ink dark:text-white leading-snug mb-3">
+        <h1 class="font-sans text-3xl font-semibold text-ink leading-snug mb-3">
           {item.data.title}
         </h1>
         <time class="text-sm text-ink-faint" datetime={item.data.date.toISOString()}>
@@ -46,12 +46,12 @@ const categoryColors: Record<string, string> = {
         </time>
       </header>
 
-      <div class="prose prose-base dark:prose-invert max-w-none font-serif">
+      <div class="prose prose-base max-w-none font-serif">
         <Content />
       </div>
 
       {item.data.externalUrl && (
-        <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
+        <div class="mt-8 pt-6 border-t border-gray-100">
           <a href={item.data.externalUrl} target="_blank" rel="noopener" class="btn-primary">
             Read full story &rarr;
           </a>

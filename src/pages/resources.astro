@@ -1,4 +1,4 @@
----
+﻿---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const software = [
@@ -27,7 +27,7 @@ const software = [
 
 const datasets = [
   {
-    name: 'Macaque V1/V4 Neuropixels — Naturalistic stimuli',
+    name: 'Macaque V1/V4 Neuropixels â€” Naturalistic stimuli',
     description: 'Simultaneous Neuropixels recordings from V1 and V4 in two macaques viewing natural images and movies. 512 channels, 5 sessions per animal.',
     url: 'https://dandiarchive.org/dandiset/000000',
     format: 'NWB',
@@ -61,7 +61,7 @@ const links = [
 
 <BaseLayout title="Resources" description="Software, datasets, and links from the Neural Computation Laboratory.">
   <div class="container-lab py-12">
-    <div class="mb-10 border-b border-gray-200 dark:border-gray-800 pb-8">
+    <div class="mb-10 border-b border-gray-200 pb-8">
       <h1 class="section-heading">Resources</h1>
       <p class="section-lead max-w-2xl">Open-source software, public datasets, and curated links for the neural computation community.</p>
     </div>
@@ -70,16 +70,16 @@ const links = [
     <section aria-labelledby="software-heading" class="mb-14">
       <h2 id="software-heading" class="font-sans text-sm font-bold uppercase tracking-widest text-ink-faint mb-6 flex items-center gap-3">
         Software
-        <span class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></span>
+        <span class="flex-1 h-px bg-gray-100"></span>
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
         {software.map(pkg => (
           <article class="card p-5 flex flex-col gap-3">
             <div class="flex items-start justify-between gap-2">
-              <h3 class="font-mono text-base font-semibold text-ink dark:text-white">{pkg.name}</h3>
+              <h3 class="font-mono text-base font-semibold text-ink">{pkg.name}</h3>
               <span class="tag text-xs">{pkg.language}</span>
             </div>
-            <p class="font-serif text-sm text-ink-muted dark:text-gray-400 leading-relaxed flex-1">{pkg.description}</p>
+            <p class="font-serif text-sm text-ink-muted leading-relaxed flex-1">{pkg.description}</p>
             <div class="flex gap-2 mt-auto pt-1">
               <a href={pkg.url} target="_blank" rel="noopener" class="btn-ghost text-xs py-1">
                 GitHub &rarr;
@@ -99,14 +99,14 @@ const links = [
     <section aria-labelledby="data-heading" class="mb-14">
       <h2 id="data-heading" class="font-sans text-sm font-bold uppercase tracking-widest text-ink-faint mb-6 flex items-center gap-3">
         Public Datasets
-        <span class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></span>
+        <span class="flex-1 h-px bg-gray-100"></span>
       </h2>
       <div class="space-y-4">
         {datasets.map(ds => (
           <article class="card p-5 flex items-start gap-4">
             <div class="flex-1">
-              <h3 class="font-sans font-semibold text-ink dark:text-white mb-1">{ds.name}</h3>
-              <p class="font-serif text-sm text-ink-muted dark:text-gray-400 leading-relaxed mb-3">{ds.description}</p>
+              <h3 class="font-sans font-semibold text-ink mb-1">{ds.name}</h3>
+              <p class="font-serif text-sm text-ink-muted leading-relaxed mb-3">{ds.description}</p>
               <div class="flex items-center gap-3">
                 <a href={ds.url} target="_blank" rel="noopener" class="link text-sm">Access dataset &rarr;</a>
                 <span class="tag text-xs">{ds.format}</span>
@@ -121,7 +121,7 @@ const links = [
     <section aria-labelledby="links-heading">
       <h2 id="links-heading" class="font-sans text-sm font-bold uppercase tracking-widest text-ink-faint mb-6 flex items-center gap-3">
         Useful Links
-        <span class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></span>
+        <span class="flex-1 h-px bg-gray-100"></span>
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         {links.map(group => (
@@ -135,7 +135,7 @@ const links = [
                       <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                     </svg>
                     <span>
-                      <span class="text-sm font-medium text-ink dark:text-white group-hover:text-accent transition-colors">{link.label}</span>
+                      <span class="text-sm font-medium text-ink group-hover:text-accent transition-colors">{link.label}</span>
                       <span class="block text-xs text-ink-faint">{link.desc}</span>
                     </span>
                   </a>
