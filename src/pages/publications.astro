@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import PublicationCard from '../components/publications/PublicationCard.astro';
 import { sortByYear, groupByYear } from '../lib/utils';
 
 const allPubs = await getCollection('publications');
@@ -9,221 +8,238 @@ const sorted = sortByYear(allPubs);
 const grouped = groupByYear(sorted);
 const years = Object.keys(grouped).map(Number).sort((a, b) => b - a);
 
-const allCategories = [...new Set(allPubs.flatMap(p => p.data.categories))].sort();
 const allTypes = [...new Set(allPubs.map(p => p.data.type))].sort();
 ---
 
-<BaseLayout title="Publications" description="Full list of publications from the Neural Computation Laboratory.">
+<BaseLayout title="Publications" description="Full list of publications from the DeLi Lab.">
   <div class="container-lab py-12">
+
     <!-- Page header -->
-    <div class="mb-8 border-b border-gray-200 dark:border-gray-800 pb-8">
+    <div class="mb-10 border-b border-rule pb-8">
       <h1 class="section-heading">Publications</h1>
-      <p class="section-lead max-w-2xl">Our research outputs, with open access where possible. PDFs and code are freely available.</p>
+      <p class="section-lead">Our research outputs, with open access where possible.</p>
+
+      <!-- Toolbar -->
+      <div class="flex flex-col sm:flex-row gap-3 mt-6" id="pub-toolbar">
+        <!-- Search -->
+        <div class="relative flex-1 max-w-sm">
+          <label for="pub-search" class="sr-only">Search publications</label>
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-ink-faint pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/>
+          </svg>
+          <input
+            id="pub-search"
+            type="search"
+            placeholder="Search title, author…"
+            class="w-full pl-8 pr-4 py-1.5 text-sm bg-surface border border-rule focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+            autocomplete="off"
+          />
+        </div>
+
+        <!-- Type filter -->
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <button class="pub-filter-btn text-xs font-medium px-2.5 py-1 border border-ink bg-ink text-paper" data-filter="type" data-value="all">All</button>
+          {allTypes.map(t => (
+            <button class="pub-filter-btn text-xs font-medium px-2.5 py-1 border border-rule text-ink-muted hover:border-ink hover:text-ink transition-colors" data-filter="type" data-value={t}>
+              {t.charAt(0).toUpperCase() + t.slice(1)}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Count -->
+      <p class="mt-3 text-xs text-ink-faint" id="pub-count" aria-live="polite">
+        <span id="pub-count-num">{allPubs.length}</span> publications
+      </p>
     </div>
 
-    <!-- Toolbar -->
-    <div class="flex flex-col sm:flex-row gap-3 mb-8" id="pub-toolbar">
-      <!-- Search -->
-      <div class="relative flex-1">
-        <label for="pub-search" class="sr-only">Search publications</label>
-        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-faint pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/>
-        </svg>
-        <input
-          id="pub-search"
-          type="search"
-          placeholder="Search title, author, keyword…"
-          class="w-full pl-9 pr-4 py-2 text-sm bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
-          autocomplete="off"
-        />
-      </div>
+    <!-- Timeline -->
+    <div id="pub-list-view" class="relative">
+      <!-- Vertical rule -->
+      <div class="hidden sm:block absolute left-20 top-0 bottom-0 w-px bg-rule" aria-hidden="true"></div>
 
-      <!-- Filter by type -->
-      <div class="flex items-center gap-2 flex-wrap">
-        <span class="text-xs text-ink-faint font-medium">Type:</span>
-        <button class="pub-filter-btn active px-2.5 py-1 rounded text-xs font-medium border transition-colors" data-filter="type" data-value="all">All</button>
-        {allTypes.map(t => (
-          <button class="pub-filter-btn px-2.5 py-1 rounded text-xs font-medium border transition-colors" data-filter="type" data-value={t}>
-            {t.charAt(0).toUpperCase() + t.slice(1)}
-          </button>
-        ))}
-      </div>
-
-      <!-- View toggle -->
-      <div class="flex items-center border border-gray-200 dark:border-gray-700 rounded-md overflow-hidden">
-        <button id="view-list" aria-label="List view" aria-pressed="true" class="p-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-accent">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-          </svg>
-        </button>
-        <button id="view-cards" aria-label="Card view" aria-pressed="false" class="p-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-ink-faint">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <!-- Results count -->
-    <p class="text-sm text-ink-faint mb-6" id="pub-count" aria-live="polite">
-      Showing <span id="pub-count-num">{allPubs.length}</span> publications
-    </p>
-
-    <!-- Publication list by year -->
-    <div id="pub-list-view">
       {years.map(year => (
-        <section class="pub-year-group mb-10" data-year={year} aria-labelledby={`year-${year}`}>
-          <h2 id={`year-${year}`} class="font-sans text-sm font-bold text-ink-faint dark:text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-3">
-            {year}
-            <span class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></span>
-          </h2>
-          <div class="pub-items-container space-y-2">
-            {grouped[year].map(pub => (
-              <PublicationCard pub={pub} view="list" />
-            ))}
+        <section class="pub-year-group relative mb-12 sm:flex sm:gap-12" data-year={year} aria-labelledby={`year-${year}`}>
+          <!-- Year label -->
+          <div class="hidden sm:flex w-20 shrink-0 justify-end pt-0.5">
+            <h2 id={`year-${year}`} class="relative z-10 text-sm font-semibold text-ink tabular-nums">
+              {year}
+            </h2>
+          </div>
+          <!-- Mobile year -->
+          <h2 id={`year-${year}-mobile`} class="sm:hidden text-sm font-semibold text-ink mb-4">{year}</h2>
+
+          <!-- Entries -->
+          <div class="flex-1 space-y-8 sm:pl-0">
+            {grouped[year].map(pub => {
+              const { title, authors, venue, venueShort, type, doi, arxiv, pdf, abstract, keywords, featured, award } = pub.data;
+              const doiUrl  = doi   ? `https://doi.org/${doi}`       : null;
+              const arxivUrl = arxiv ? `https://arxiv.org/abs/${arxiv}` : null;
+              const href    = doiUrl ?? arxivUrl ?? `/publications/${pub.id}`;
+              const abstractId = `abstract-${pub.id}`;
+              return (
+                <article
+                  class="pub-card group"
+                  data-type={type}
+                  data-title={title.toLowerCase()}
+                  data-authors={authors.join(' ').toLowerCase()}
+                  data-categories={(pub.data.categories ?? []).join(',')}
+                >
+                  <!-- Type + award badges -->
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="eyebrow">{type}</span>
+                    {award && <span class="eyebrow text-amber-600">★ {award}</span>}
+                    {featured && <span class="eyebrow text-accent">Featured</span>}
+                  </div>
+
+                  <!-- Title -->
+                  <h3 class="font-sans text-[0.9375rem] font-semibold leading-snug text-ink group-hover:text-accent transition-colors duration-150">
+                    <a href={href} target={doiUrl || arxivUrl ? '_blank' : '_self'} rel={doiUrl || arxivUrl ? 'noopener' : undefined}>
+                      {title}
+                    </a>
+                  </h3>
+
+                  <!-- Authors -->
+                  <p class="mt-0.5 text-sm text-ink-muted">
+                    {authors.join(', ')}
+                  </p>
+
+                  <!-- Venue -->
+                  <p class="mt-0.5 text-sm">
+                    <span class="italic text-ink-muted">{venueShort ?? venue}</span>
+                    <span class="text-ink-faint mx-1">·</span>
+                    <span class="text-ink-faint">{year}</span>
+                  </p>
+
+                  <!-- Keywords -->
+                  {keywords && keywords.length > 0 && (
+                    <div class="mt-1.5 flex flex-wrap gap-1">
+                      {keywords.map(kw => <span class="tag">{kw}</span>)}
+                    </div>
+                  )}
+
+                  <!-- Actions -->
+                  <div class="mt-2 flex flex-wrap items-center gap-3">
+                    {doiUrl && (
+                      <a href={doiUrl} target="_blank" rel="noopener" class="text-xs text-ink-faint hover:text-accent transition-colors">DOI ↗</a>
+                    )}
+                    {arxivUrl && (
+                      <a href={arxivUrl} target="_blank" rel="noopener" class="text-xs text-ink-faint hover:text-accent transition-colors">arXiv ↗</a>
+                    )}
+                    {pdf && (
+                      <a href={pdf} target="_blank" rel="noopener" class="text-xs text-ink-faint hover:text-accent transition-colors">PDF ↗</a>
+                    )}
+                    {abstract && (
+                      <button
+                        class="text-xs text-ink-faint hover:text-accent transition-colors abstract-toggle"
+                        data-target={abstractId}
+                        aria-expanded="false"
+                      >
+                        Abstract ↓
+                      </button>
+                    )}
+                  </div>
+
+                  <!-- Abstract (hidden by default) -->
+                  {abstract && (
+                    <p id={abstractId} class="pub-abstract hidden mt-3 text-sm text-ink-muted font-serif leading-relaxed border-l-2 border-rule pl-3">
+                      {abstract}
+                    </p>
+                  )}
+                </article>
+              );
+            })}
           </div>
         </section>
       ))}
     </div>
 
-    <!-- Card grid view (hidden by default) -->
-    <div id="pub-card-view" class="hidden">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="pub-card-grid">
-        {sorted.map(pub => (
-          <PublicationCard pub={pub} view="card" />
-        ))}
-      </div>
+    <!-- Empty state -->
+    <div id="pub-empty" class="hidden text-center py-20 text-ink-faint">
+      <p class="text-sm">No publications match your search.</p>
+      <button id="clear-filters" class="mt-2 link text-xs">Clear filters</button>
     </div>
 
-    <!-- Empty state -->
-    <div id="pub-empty" class="hidden text-center py-16 text-ink-muted">
-      <svg class="w-12 h-12 mx-auto mb-4 text-ink-faint" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-      </svg>
-      <p class="font-sans font-medium">No publications match your search.</p>
-      <button id="clear-filters" class="mt-2 link text-sm">Clear filters</button>
-    </div>
   </div>
 </BaseLayout>
 
 <script>
-  // ─── Publication filter & search ───────────────────────────────────────────
   const searchInput = document.getElementById('pub-search') as HTMLInputElement;
-  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.pub-filter-btn');
-  const listView = document.getElementById('pub-list-view')!;
-  const cardView = document.getElementById('pub-card-view')!;
-  const viewListBtn = document.getElementById('view-list')!;
-  const viewCardsBtn = document.getElementById('view-cards')!;
-  const emptyState = document.getElementById('pub-empty')!;
-  const countSpan = document.getElementById('pub-count-num')!;
-  const clearBtn = document.getElementById('clear-filters')!;
+  const filterBtns  = document.querySelectorAll<HTMLButtonElement>('.pub-filter-btn');
+  const emptyState  = document.getElementById('pub-empty')!;
+  const countSpan   = document.getElementById('pub-count-num')!;
+  const clearBtn    = document.getElementById('clear-filters')!;
 
-  let currentType = 'all';
+  let currentType   = 'all';
   let currentSearch = '';
-  let isCardView = false;
-
-  function getCards(): NodeListOf<Element> {
-    return document.querySelectorAll('.pub-card');
-  }
 
   function applyFilters() {
-    const cards = getCards();
+    const cards = document.querySelectorAll<HTMLElement>('.pub-card');
     let visible = 0;
 
     cards.forEach(card => {
-      const type = card.getAttribute('data-type') ?? '';
-      const title = card.getAttribute('data-title') ?? '';
-      const authors = card.getAttribute('data-authors') ?? '';
-      const categories = card.getAttribute('data-categories') ?? '';
-
-      const typeMatch = currentType === 'all' || type === currentType;
-      const q = currentSearch.toLowerCase();
-      const searchMatch = !q || title.includes(q) || authors.includes(q) || categories.includes(q);
-      const show = typeMatch && searchMatch;
-
-      (card as HTMLElement).style.display = show ? '' : 'none';
+      const typeMatch   = currentType === 'all' || card.dataset.type === currentType;
+      const q           = currentSearch.toLowerCase();
+      const searchMatch = !q || (card.dataset.title ?? '').includes(q) || (card.dataset.authors ?? '').includes(q);
+      const show        = typeMatch && searchMatch;
+      card.style.display = show ? '' : 'none';
       if (show) visible++;
     });
 
-    // Hide year groups with no visible items (list view)
-    document.querySelectorAll('.pub-year-group').forEach(group => {
-      const hasVisible = Array.from(group.querySelectorAll('.pub-card')).some(
-        c => (c as HTMLElement).style.display !== 'none'
-      );
-      (group as HTMLElement).style.display = hasVisible ? '' : 'none';
+    // Hide empty year sections
+    document.querySelectorAll<HTMLElement>('.pub-year-group').forEach(group => {
+      const hasVisible = Array.from(group.querySelectorAll<HTMLElement>('.pub-card')).some(c => c.style.display !== 'none');
+      group.style.display = hasVisible ? '' : 'none';
     });
 
     countSpan.textContent = String(visible);
     emptyState.classList.toggle('hidden', visible > 0);
-    listView.classList.toggle('hidden', isCardView || visible === 0);
-    cardView.classList.toggle('hidden', !isCardView || visible === 0);
   }
 
-  searchInput.addEventListener('input', (e) => {
+  searchInput.addEventListener('input', e => {
     currentSearch = (e.target as HTMLInputElement).value;
     applyFilters();
   });
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      const filter = btn.dataset.filter!;
-      const value = btn.dataset.value!;
-      if (filter === 'type') {
-        currentType = value;
-        document.querySelectorAll<HTMLButtonElement>('[data-filter="type"]').forEach(b => {
-          b.classList.toggle('active', b.dataset.value === value);
-          b.classList.toggle('bg-accent', b.dataset.value === value);
-          b.classList.toggle('text-white', b.dataset.value === value);
-          b.classList.toggle('border-accent', b.dataset.value === value);
-          b.classList.toggle('text-ink-muted', b.dataset.value !== value);
-          b.classList.toggle('border-gray-200', b.dataset.value !== value);
-        });
-      }
+      currentType = btn.dataset.value!;
+      filterBtns.forEach(b => {
+        const active = b.dataset.value === currentType;
+        b.classList.toggle('bg-ink',    active);
+        b.classList.toggle('text-paper', active);
+        b.classList.toggle('border-ink', active);
+        b.classList.toggle('text-ink-muted', !active);
+        b.classList.toggle('border-rule',    !active);
+      });
       applyFilters();
     });
-  });
-
-  // Initialize active filter styles
-  document.querySelectorAll<HTMLButtonElement>('[data-filter="type"]').forEach(b => {
-    if (b.dataset.value === 'all') {
-      b.classList.add('bg-accent', 'text-white', 'border-accent');
-    } else {
-      b.classList.add('text-ink-muted', 'dark:text-gray-400', 'border-gray-200', 'dark:border-gray-700');
-      b.classList.add('hover:border-accent', 'hover:text-accent');
-    }
-  });
-
-  viewListBtn.addEventListener('click', () => {
-    isCardView = false;
-    viewListBtn.setAttribute('aria-pressed', 'true');
-    viewCardsBtn.setAttribute('aria-pressed', 'false');
-    viewListBtn.classList.replace('text-ink-faint', 'text-accent');
-    viewCardsBtn.classList.replace('text-accent', 'text-ink-faint');
-    applyFilters();
-  });
-
-  viewCardsBtn.addEventListener('click', () => {
-    isCardView = true;
-    viewCardsBtn.setAttribute('aria-pressed', 'true');
-    viewListBtn.setAttribute('aria-pressed', 'false');
-    viewCardsBtn.classList.replace('text-ink-faint', 'text-accent');
-    viewListBtn.classList.replace('text-accent', 'text-ink-faint');
-    applyFilters();
   });
 
   clearBtn.addEventListener('click', () => {
     searchInput.value = '';
     currentSearch = '';
     currentType = 'all';
-    document.querySelectorAll<HTMLButtonElement>('[data-filter="type"]').forEach(b => {
-      if (b.dataset.value === 'all') {
-        b.classList.add('bg-accent', 'text-white', 'border-accent');
-        b.classList.remove('text-ink-muted', 'border-gray-200');
-      } else {
-        b.classList.remove('bg-accent', 'text-white', 'border-accent');
-        b.classList.add('text-ink-muted', 'border-gray-200');
-      }
+    filterBtns.forEach(b => {
+      const active = b.dataset.value === 'all';
+      b.classList.toggle('bg-ink', active);
+      b.classList.toggle('text-paper', active);
+      b.classList.toggle('border-ink', active);
+      b.classList.toggle('text-ink-muted', !active);
+      b.classList.toggle('border-rule', !active);
     });
     applyFilters();
+  });
+
+  // Abstract toggles
+  document.querySelectorAll<HTMLButtonElement>('.abstract-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target!);
+      if (!target) return;
+      const open = !target.classList.contains('hidden');
+      target.classList.toggle('hidden', open);
+      btn.textContent = open ? 'Abstract ↓' : 'Abstract ↑';
+      btn.setAttribute('aria-expanded', String(!open));
+    });
   });
 </script>
