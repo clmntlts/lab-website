@@ -6,7 +6,7 @@ export const SITE = {
   institution: 'Université catholique de Louvain',
   department: 'Institut de Recherche en Sciences Psychologiques (IPSY)',
   address: 'Place Cardinal Mercier 10, 1348 Louvain-la-Neuve, Belgium',
-  email: 'marie.vanreybroeck@uclouvain.be',
+  email: 'delilab.ucl@gmail.com',
   twitter: '@delilabucl',
   github: 'https://github.com/delilabucl',
   pi: 'Marie Van Reybroeck',
