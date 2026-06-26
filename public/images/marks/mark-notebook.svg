@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 56" fill="none" role="img" aria-label="DeLi Lab mark">
+  <!-- Red margin line — the signature element -->
+  <line x1="12" y1="4" x2="12" y2="52" stroke="#C13B2A" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Ruled lines — notebook paper -->
+  <line x1="18" y1="16" x2="40" y2="16" stroke="#12100E" stroke-width="1.25" stroke-linecap="round" opacity="0.2"/>
+  <line x1="18" y1="26" x2="40" y2="26" stroke="#12100E" stroke-width="1.25" stroke-linecap="round" opacity="0.2"/>
+  <line x1="18" y1="36" x2="40" y2="36" stroke="#12100E" stroke-width="1.25" stroke-linecap="round" opacity="0.2"/>
+  <line x1="18" y1="46" x2="34" y2="46" stroke="#12100E" stroke-width="1.25" stroke-linecap="round" opacity="0.1"/>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" fill="none" role="img" aria-label="DeLi Lab mark">
+  <!-- D·L Monogram: geometric letterforms, interlocked -->
+  <!-- D — left half, fountain-pen blue -->
+  <path d="M10 10 L10 34 C10 34 24 34 24 22 C24 10 10 10 10 10 Z"
+        stroke="#1B3A6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- L — right, shares the vertical stem of D via overlap; red accent on foot -->
+  <line x1="24" y1="10" x2="24" y2="34" stroke="#1B3A6B" stroke-width="2" stroke-linecap="round"/>
+  <line x1="24" y1="34" x2="36" y2="34" stroke="#C13B2A" stroke-width="2" stroke-linecap="round"/>
+</svg>

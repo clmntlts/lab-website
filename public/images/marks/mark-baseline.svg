@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" fill="none" role="img" aria-label="DeLi Lab mark">
+  <!-- The Baseline: lowercase 'a' sitting on a ruled line, with a red teacher's underline -->
+  <!-- Ruled line — the notebook baseline -->
+  <line x1="6" y1="32" x2="38" y2="32" stroke="#12100E" stroke-width="1" stroke-linecap="round" opacity="0.18"/>
+  <!-- The letter — first thing a child learns to write -->
+  <text x="22" y="31" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-style="italic" font-weight="600" fill="#12100E" text-anchor="middle" opacity="0.88">a</text>
+  <!-- Red underline — the teacher's mark, the correction, the attention -->
+  <line x1="10" y1="36" x2="34" y2="36" stroke="#C13B2A" stroke-width="2" stroke-linecap="round"/>
+</svg>
