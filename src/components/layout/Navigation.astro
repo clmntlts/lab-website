@@ -9,15 +9,17 @@ const currentPath = Astro.url.pathname;
   <div class="container-lab">
     <nav aria-label="Main navigation" class="flex items-center justify-between h-14">
 
-      <!-- Wordmark -->
-      <a href="/" class="flex items-center gap-3 group" aria-label={`${SITE.name} â€” Home`}>
-        <span class="font-sans text-xs font-bold tracking-widest uppercase text-ink"
-              style="letter-spacing: 0.15em;">
-          {SITE.shortName ?? 'NCL'}
+      <!-- Wordmark — red margin line is the identity mark -->
+      <a href=”/” class=”flex items-center gap-3” aria-label={`${SITE.name} — Home`}
+         style=”text-decoration: none;”>
+        <span style=”display: block; width: 2px; height: 1.125rem; background-color: var(--color-margin); flex-shrink: 0;” aria-hidden=”true”></span>
+        <span class=”font-sans font-semibold text-ink”
+              style=”font-size: 0.8125rem; letter-spacing: 0.005em; white-space: nowrap;”>
+          DeLi Lab
         </span>
-        <span class="hidden sm:block text-rule" style="color: var(--color-rule);" aria-hidden="true">|</span>
-        <span class="hidden sm:block font-sans text-xs text-ink-muted truncate max-w-xs">
-          {SITE.department}
+        <span class=”hidden lg:block font-sans text-ink-faint”
+              style=”font-size: 0.75rem; padding-left: 0.875rem; border-left: 1px solid var(--color-rule);”>
+          Development of Literacy · UCLouvain
         </span>
       </a>
 

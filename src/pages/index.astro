@@ -48,14 +48,19 @@ const researchTopics = [
 
   <!-- ── Hero ─────────────────────────────────────────── -->
   <section class="container-lab pt-20 pb-16 md:pt-28 md:pb-20" aria-label="Lab introduction">
-    <p class="eyebrow mb-6">{SITE.institution} &nbsp;·&nbsp; {SITE.department}</p>
-    <h1 class="font-sans font-semibold tracking-tight leading-none text-ink mb-8"
-        style="font-size: clamp(2.5rem, 6vw, 4.5rem);">
+    <div class="flex gap-8 md:gap-10">
+      <!-- The red margin — French école signature, used only here -->
+      <div style="flex-shrink: 0; display: flex; flex-direction: column;">
+        <div style="width: 2px; flex: 1; margin-top: 0.5rem; background-color: var(--color-margin);"></div>
+      </div>
+      <div>
+    <p class="eyebrow mb-5">{SITE.institution} &nbsp;·&nbsp; {SITE.department}</p>
+    <h1 style="font-family: var(--font-family-serif); font-size: clamp(2.25rem, 5.5vw, 4rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: var(--color-ink); margin-bottom: 1.5rem;">
       Development<br />of Literacy<br />
-      <span class="text-accent">Laboratory</span>
+      <em style="font-style: italic; color: var(--color-accent);">Laboratory</em>
     </h1>
     <p class="font-serif leading-relaxed max-w-xl mb-10"
-       style="font-size: 1.0625rem; color: var(--color-ink-muted);">
+       style="font-size: 1.0625rem; color: var(--color-ink-muted); font-style: italic;">
       We study how children acquire written language — reading, spelling, and handwriting —
       and what goes wrong in developmental disorders such as dyslexia and dysorthography.
       Our work bridges cognitive psychology, neuroscience, and educational practice.
@@ -64,6 +69,8 @@ const researchTopics = [
       <a href="/research" class="btn-primary">Our Research &rarr;</a>
       <a href="/publications" class="btn-ghost">Publications</a>
       <a href="/contact" class="btn-accent">Participate</a>
+    </div>
+      </div>
     </div>
   </section>
 
