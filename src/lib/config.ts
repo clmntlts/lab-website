@@ -15,13 +15,11 @@ export const SITE = {
   logo: '/images/lab-logo.svg',
   ogImage: '/images/og-default.png',
   nav: [
-    { label: 'About',          href: '/about' },
     { label: 'Research',       href: '/research' },
     { label: 'Team',           href: '/team' },
     { label: 'Publications',   href: '/publications' },
     { label: 'Projects',       href: '/projects' },
     { label: 'Resources',      href: '/resources' },
-    { label: 'News',           href: '/news' },
     { label: 'Contact',        href: '/contact' },
   ],
 } as const;

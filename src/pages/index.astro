@@ -12,11 +12,6 @@ const featuredPubs = sortByYear(allPubs).filter(p => p.data.featured).slice(0, 3
 const allTeam = await getCollection('team');
 const sortedTeam = allTeam.sort((a, b) => a.data.order - b.data.order);
 
-const allNews = await getCollection('news');
-const recentNews = allNews
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .filter(n => n.data.featured)
-  .slice(0, 3);
 
 const researchTopics = [
   {
@@ -169,45 +164,6 @@ const researchTopics = [
     </div>
   </section>
 
-  <div style="border-top: 1px solid var(--color-rule);"></div>
-
-  <!-- ── News ──────────────────────────────────────────── -->
-  <section class="container-lab py-16" aria-labelledby="news-heading">
-    <header class="mb-8">
-      <p class="eyebrow mb-2">Updates</p>
-      <h2 id="news-heading" class="section-heading">Latest News</h2>
-    </header>
-    <div style="border-top: 1px solid var(--color-rule);">
-      {recentNews.length > 0
-        ? recentNews.map(item => (
-          <article class="py-5 flex gap-6"
-                   style="border-bottom: 1px solid var(--color-rule);">
-            <time class="flex-shrink-0 font-mono text-xs text-ink-faint pt-0.5 w-24 leading-relaxed"
-                  datetime={item.data.date.toISOString()}>
-              {item.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
-            </time>
-            <div>
-              <span class="eyebrow mb-1 block">{item.data.category}</span>
-              <h3 class="font-sans font-semibold text-ink text-sm leading-snug mb-1">
-                <a href={`/news/${item.id}`}
-                   class="hover:text-accent transition-colors duration-150">{item.data.title}</a>
-              </h3>
-              <p class="text-sm text-ink-muted font-serif leading-relaxed">{item.data.summary}</p>
-            </div>
-          </article>
-        ))
-        : (
-          <p class="py-8 text-sm text-ink-muted font-serif italic"
-             style="border-bottom: 1px solid var(--color-rule);">
-            News items are being updated.
-          </p>
-        )
-      }
-    </div>
-    <div class="mt-6 text-right">
-      <a href="/news" class="link text-sm">All news &rarr;</a>
-    </div>
-  </section>
 
   <!-- ── Participate CTA ───────────────────────────────── -->
   <section style="border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule);">
