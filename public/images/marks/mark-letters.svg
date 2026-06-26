@@ -1,8 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" role="img" aria-label="DeLi Lab mark">
-  <!-- Letters in varied sizes and rotations — echoes the original logo concept, refined -->
+  <!-- Letters in varied sizes and rotations -->
   <text x="6"  y="20" font-family="Georgia, 'Times New Roman', serif" font-size="18" font-style="italic" fill="#12100E" opacity="0.85" transform="rotate(-8, 6, 20)">a</text>
   <text x="20" y="14" font-family="Georgia, 'Times New Roman', serif" font-size="11" font-style="italic" fill="#1B3A6B" opacity="0.6"  transform="rotate(5, 20, 14)">b</text>
   <text x="30" y="26" font-family="Georgia, 'Times New Roman', serif" font-size="15" font-style="italic" fill="#12100E" opacity="0.5"  transform="rotate(-4, 30, 26)">é</text>
   <text x="10" y="38" font-family="Georgia, 'Times New Roman', serif" font-size="10" font-style="italic" fill="#1B3A6B" opacity="0.4"  transform="rotate(6, 10, 38)">l</text>
   <text x="34" y="40" font-family="Georgia, 'Times New Roman', serif" font-size="13" font-style="italic" fill="#C13B2A" opacity="0.7"  transform="rotate(-6, 34, 40)">i</text>
+  <!-- Fountain pen — body diagonal, red nib at tip -->
+  <g transform="rotate(-38, 38, 32)">
+    <!-- Barrel -->
+    <rect x="35" y="18" width="5" height="16" rx="1" fill="#C13B2A"/>
+    <!-- Clip -->
+    <line x1="39.5" y1="19" x2="39.5" y2="33" stroke="#9B2D1E" stroke-width="0.75" stroke-linecap="round"/>
+    <!-- Nib -->
+    <polygon points="35.5,34 39.5,34 37.5,39" fill="#C13B2A"/>
+    <!-- Nib slit -->
+    <line x1="37.5" y1="35" x2="37.5" y2="38.5" stroke="#9B2D1E" stroke-width="0.5" stroke-linecap="round"/>
+  </g>
 </svg>
