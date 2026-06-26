@@ -71,23 +71,50 @@ const researchTopics = [
 
   <div style="border-top: 1px solid var(--color-rule);"></div>
 
-  <!-- ── Stats ─────────────────────────────────────────── -->
-  <section class="container-lab py-10" aria-label="Lab at a glance">
-    <dl class="grid grid-cols-2 md:grid-cols-4 gap-px" style="background-color: var(--color-rule);">
-      {[
-        { value: '15+', label: 'Team members' },
-        { value: '80+', label: 'Publications' },
-        { value: String(new Date().getFullYear() - SITE.founded), label: 'Years of research' },
-        { value: 'BE · FR · INT', label: 'Research network' },
-      ].map(stat => (
-        <div class="px-6 py-5" style="background-color: var(--color-paper);">
-          <dt class="font-sans text-2xl font-semibold text-ink tracking-tight"
-              style="font-variant-numeric: tabular-nums;">{stat.value}</dt>
-          <dd class="mt-0.5 font-sans uppercase text-ink-faint"
-              style="font-size: 0.6875rem; letter-spacing: 0.08em;">{stat.label}</dd>
-        </div>
-      ))}
-    </dl>
+  <!-- ── Typographic interstitial ─────────────────────────
+       Visual cue to the subject: the act of learning to write.
+       No imagery — the sentence itself is the design.
+  ─────────────────────────────────────────────────────────── -->
+  <section aria-label="Lab philosophy" style="overflow: hidden; position: relative;">
+    <div class="container-lab" style="padding-top: 4rem; padding-bottom: 4rem;">
+      <!-- Faint background letterform — the letter 'a', the first thing a child learns -->
+      <span aria-hidden="true" style="
+        position: absolute;
+        right: -0.5rem;
+        top: 50%;
+        transform: translateY(-54%);
+        font-family: var(--font-family-serif);
+        font-size: clamp(12rem, 30vw, 22rem);
+        font-weight: 600;
+        line-height: 1;
+        color: var(--color-rule);
+        user-select: none;
+        pointer-events: none;
+        letter-spacing: -0.05em;
+      ">a</span>
+
+      <!-- The sentence -->
+      <blockquote style="
+        position: relative;
+        max-width: 36ch;
+        margin: 0;
+        padding: 0;
+        border: none;
+      ">
+        <p style="
+          font-family: var(--font-family-serif);
+          font-style: italic;
+          font-size: clamp(1.375rem, 3vw, 1.875rem);
+          line-height: 1.45;
+          color: var(--color-ink);
+          letter-spacing: -0.01em;
+        ">
+          Before a child can write, they must learn
+          that marks on a page carry meaning.
+          We study every step of that journey.
+        </p>
+      </blockquote>
+    </div>
   </section>
 
   <div style="border-top: 1px solid var(--color-rule);"></div>
