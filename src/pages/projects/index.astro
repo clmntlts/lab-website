@@ -1,4 +1,4 @@
-﻿---
+---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
@@ -81,7 +81,7 @@ const statusColors = {
                 </h3>
                 <p class="text-sm text-ink-muted">
                   {project.data.startYear}
-                  {project.data.endYear ? `â€“${project.data.endYear}` : 'â€“present'}
+                  {project.data.endYear ? `â€"${project.data.endYear}` : 'â€"present'}
                   {project.data.funders.length > 0 && ` Â· ${project.data.funders.join(', ')}`}
                 </p>
               </div>
